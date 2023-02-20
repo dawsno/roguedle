@@ -8,6 +8,7 @@
 		LetterStates,
 		getWordNumber,
 		words,
+		COLS,
 	} from "./utils";
 	import Game from "./components/Game.svelte";
 	import { letterStates, settings, mode } from "./stores";
@@ -45,7 +46,36 @@
 		localStorage.setItem("mode", `${m}`);
 		window.location.hash = GameMode[m];
 		stats = new Stats(localStorage.getItem(`stats-${m}`) || m);
-		word = words.words[seededRandomInt(0, words.words.length, modeData.modes[m].seed)];
+		var wordsList;
+		switch (COLS)  {
+			case 5: 
+				wordsList = words.words5; 
+				break;
+			case 6: 
+				wordsList= words.words6;
+				break;
+			case 7: 
+				wordsList = words.words7;
+				break;
+			case 8: 
+				wordsList = words.words8;
+				break;
+			case 9: 
+				wordsList = words.words9;
+				break;
+			case 10: 
+				wordsList = words.words10;
+				break;
+			case 11: 
+				wordsList = words.words11;
+				break;
+			case 12: 
+				wordsList = words.words12;
+				break;
+			default:
+				wordsList = words.words5;
+		} 
+		word = wordsList[seededRandomInt(0, wordsList.length, modeData.modes[$mode].seed)];
 		if (modeData.modes[m].historical) {
 			state = new GameState(m, localStorage.getItem(`state-${m}-h`));
 		} else {

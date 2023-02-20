@@ -1,14 +1,43 @@
 import seedRandom from "seedrandom";
 import { GameMode, ms } from "./enums";
-import wordList from "./words_5";
+import wordList from "./words";
 
-export const ROWS = 6;
-export const COLS = 5;
+export var ROWS = 6;
+export var COLS = 5;
 
 export const words = {
 	...wordList,
 	contains: (word: string) => {
-		return wordList.words.includes(word) || wordList.valid.includes(word);
+		var wordsList;
+		switch (word.length)  {
+			case 5: 
+				wordsList = words.words5; 
+				break;
+			case 6: 
+				wordsList= words.words6;
+				break;
+			case 7: 
+				wordsList = words.words7;
+				break;
+			case 8: 
+				wordsList = words.words8;
+				break;
+			case 9: 
+				wordsList = words.words9;
+				break;
+			case 10: 
+				wordsList = words.words10;
+				break;
+			case 11: 
+				wordsList = words.words11;
+				break;
+			case 12: 
+				wordsList = words.words12;
+				break;
+			default:
+				wordsList = words.words5;
+		} 
+		return wordsList.includes(word);
 	},
 };
 
