@@ -55,7 +55,7 @@
 		grid-auto-flow: column;
 		grid-auto-columns: min(7vw,4em);
 		grid-auto-rows: min(7vw,4em);
-
+		height: min(7vw,4em);
 		gap: 5px;
 		&[data-animation="shake"] {
 			animation: shake 0.6s;

@@ -102,11 +102,12 @@
 <style>
 	.board {
 		display: grid;
-		grid-template-rows: repeat(var(--rows), 1fr);
-		gap: 5.5px;
+		grid-template-rows: repeat(var(--rows));
 		aspect-ratio: var(--cols) / var(--rows);
 		position: relative;
 		justify-content: center;
+		align-content: center;
+		gap: 5px;
 		margin-top: 5em;
 		margin-bottom: 15em;
 	}

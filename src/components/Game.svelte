@@ -298,7 +298,7 @@
 	main {
 		display: flex;
 		flex-direction: column;
-		justify-content: space-around;
+		justify-content: space-between;
 		align-items: center;
 		height: 100%;
 		overflow-y: scroll;
