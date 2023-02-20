@@ -50,7 +50,12 @@
 <style lang="scss">
 	.board-row {
 		display: grid;
-		grid-template-columns: repeat(var(--cols), 1fr);
+		grid-template-columns: repeat(var(--cols));
+		justify-content: center;
+		grid-auto-flow: column;
+		grid-auto-columns: min(7vw,4em);
+		grid-auto-rows: min(7vw,4em);
+
 		gap: 5px;
 		&[data-animation="shake"] {
 			animation: shake 0.6s;

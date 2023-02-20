@@ -14,11 +14,13 @@
 
 <style>
 	div {
-		font-size: calc(var(--fs-tiny) + 1px);
+		font-size: auto;
 		font-weight: bold;
 		text-transform: uppercase;
 		border-radius: 4px;
-		height: 58px;
+		height: 4em;
+		max-width: max(3em, 3vw);
+		max-height: 4em;
 		background: var(--key-bg);
 		cursor: pointer;
 		display: grid;
@@ -35,8 +37,10 @@
 		background: var(--key-bg) !important;
 	}
 	.big {
-		font-size: var(--fs-tiny);
-		flex-grow: 1.5;
+		font-size: auto;
+		max-width: max(6em, 5vw);
+		max-height: 4em;
+		height: 4em;
 	}
 	.⬛ {
 		background: var(--color-absent);

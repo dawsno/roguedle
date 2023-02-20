@@ -298,10 +298,10 @@
 	main {
 		display: flex;
 		flex-direction: column;
-		justify-content: space-between;
+		justify-content: space-around;
 		align-items: center;
 		height: 100%;
-		max-width: var(--game-width);
+		overflow-y: scroll;
 		margin: auto;
 		position: relative;
 	}

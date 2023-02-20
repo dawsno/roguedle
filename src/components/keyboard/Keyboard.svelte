@@ -84,13 +84,18 @@
 
 <style>
 	.keyboard {
-		width: 100%;
+		position: fixed;
+		bottom:0%;
+		width: 96%;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		margin-bottom: 2px;
+		padding-top:5px;
+		background-color: var(--bg-primary);
 	}
 	.row {
+		justify-content: center;
 		touch-action: manipulation;
 		width: 100%;
 		display: flex;

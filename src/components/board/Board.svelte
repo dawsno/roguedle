@@ -38,8 +38,6 @@
 			word = guesses > num ? val : "";
 
 			const match = getRowData(num, board);
-			pAns = words.words.filter((w) => match(w)).length;
-			pSols = pAns + words.valid.filter((w) => match(w)).length;
 		}
 	}
 
@@ -106,11 +104,11 @@
 		display: grid;
 		grid-template-rows: repeat(var(--rows), 1fr);
 		gap: 5.5px;
-		max-height: 420px;
-		flex-grow: 1;
 		aspect-ratio: var(--cols) / var(--rows);
-		padding: 10px;
 		position: relative;
+		justify-content: center;
+		margin-top: 5em;
+		margin-bottom: 15em;
 	}
 	svg {
 		position: absolute;

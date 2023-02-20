@@ -79,23 +79,28 @@
 
 <style lang="scss">
 	header {
-		--height: 51px;
-		position: relative;
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.2rem;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		border-bottom: 1px solid var(--border-primary);
-		width: 100%;
-		height: var(--height);
-		position: relative;
+		border-bottom: 2px solid var(--border-primary);
+		position: fixed;
+		background-color: var(--bg-primary);
+		width: 96%;
+		height: 4em;
+		top: 0%;
+		position: fixed;
+		z-index: 1;
 	}
 	.icons {
 		height: 100%;
 		z-index: 1;
 		display: flex;
+		align-items: center;
+		margin-left: 5%;
+		margin-right: 5%;
 	}
 	h1 {
 		position: absolute;
