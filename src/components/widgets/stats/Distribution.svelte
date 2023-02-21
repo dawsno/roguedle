@@ -2,7 +2,7 @@
 	import { failed, GameState } from "../../../utils";
 
 	export let game: GameState;
-	export let distribution: Guesses;
+	export let distribution: Guesses; //TODO replace with dynamic guesses
 
 	$: max = Object.entries(distribution).reduce((p, c) => {
 		if (!isNaN(Number(c[0]))) return Math.max(c[1], p);

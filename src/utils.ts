@@ -251,6 +251,7 @@ export class GameState extends Storable {
 	public time: number;
 	public wordNumber: number;
 	public board: GameBoard;
+	public artifactStates: ArtifactState[];
 
 	#valid = false;
 	#mode: GameMode;
@@ -271,7 +272,7 @@ export class GameState extends Storable {
 				words: Array(ROWS).fill(""),
 				state: Array.from({ length: ROWS }, () => (Array(COLS).fill("🔳"))),
 			};
-
+			this.artifactStates = new Array<ArtifactState>();
 			this.#valid = true;
 		}
 	}
@@ -319,7 +320,7 @@ export class GameState extends Storable {
 		}
 		return result;
 	}
-	private parse(str: string) {
+	private parse(str: string) { // TODO make this update cols and rows
 		const parsed = JSON.parse(str) as GameState;
 		if (parsed.wordNumber !== getWordNumber(this.#mode)) return;
 		this.active = parsed.active;
@@ -328,7 +329,7 @@ export class GameState extends Storable {
 		this.time = parsed.time;
 		this.wordNumber = parsed.wordNumber;
 		this.board = parsed.board;
-
+		this.artifactStates = parsed.artifactStates;
 		this.#valid = true;
 	}
 }
@@ -393,7 +394,7 @@ export class Stats extends Storable {
 	 * the variable that this object is assigned to equal to itself to force an update.
 	 * Example: `states = states;`.
 	 */
-	addWin(guesses: number, mode: Mode) {
+	addWin(guesses: number, mode: Mode) { 
 		++this.guesses[guesses];
 		++this.played;
 		if (this.#hasStreak) {
