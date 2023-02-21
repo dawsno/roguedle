@@ -1,3 +1,4 @@
+	<!--TODO fix tips-->
 <script context="module" lang="ts">
 	const tips = [
 		"You can change the gamemode by clicking WORDLE+ or swiping the board left or right.",
