@@ -1,7 +1,7 @@
 {
-  "name": "wordle+",
-  "description": "A remake of the popular game Wordle with additional modes and features.",
-  "version": "1.5.2",
+  "name": "roguedle",
+  "description": "A wordle roguelike",
+  "version": "1.0.0",
   "type": "module",
   "private": "true",
   "license": "GPL-3.0",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MikhaD/wordle.git"
+    "url": "git+https://github.com/dawsno/roguedle.git"
   },
   "keywords": [],
   "author": "MikhaD",
   "bugs": {
-    "url": "https://github.com/MikhaD/wordle/issues"
+    "url": "https://github.com/dawsno/roguedle/issues"
   },
-  "homepage": "https://github.com/MikhaD/wordle#readme",
+  "homepage": "https://github.com/dawsno/roguedle#readme",
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.0.2",
     "@tsconfig/svelte": "^3.0.0",

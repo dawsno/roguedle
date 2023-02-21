@@ -6,52 +6,52 @@
 </script>
 
 <h3>how to play</h3>
-<div>Guess the <strong>WORDLE</strong> in {ROWS} tries.</div>
-<div>Each guess must be a valid {COLS} letter word. Hit the enter button to submit.</div>
+<div>Guess the word in {ROWS} tries.</div>
+<div>Each guess must be a valid word. Hit the enter button to submit.</div>
 <div>
 	After each guess, the color of the tiles will change to show how close your guess was to the
 	word.
 </div>
+<div>
+	After every two correct words, you will be given the option to pick an artifact or get an extra guess. The word length will increase.
+</div>
+<div>
+	You win by solving two 12 letter words.
+</div>
 <div class:complete={visible} class="examples">
 	<div><strong>Examples</strong></div>
 	<div class="row">
-		<Tile value="w" state="🟩" />
-		<Tile value="e" state="🔳" />
-		<Tile value="a" state="🔳" />
-		<Tile value="r" state="🔳" />
-		<Tile value="y" state="🔳" />
+		<Tile value="c" state="🟩" />
+		<Tile value="i" state="⬛" />
+		<Tile value="d" state="⬛" />
+		<Tile value="e" state="⬛" />
+		<Tile value="r" state="⬛" />
 	</div>
-	<div>The letter <strong>W</strong> is in the word and in the correct spot.</div>
+	<div>The letter <strong>C</strong> is in the word and in the correct spot.</div>
 	<div class="row">
-		<Tile value="p" state="🔳" />
-		<Tile value="i" state="🟨" />
-		<Tile value="l" state="🔳" />
-		<Tile value="l" state="🔳" />
-		<Tile value="s" state="🔳" />
+		<Tile value="s" state="🟨" />
+		<Tile value="n" state="⬛" />
+		<Tile value="a" state="⬛" />
+		<Tile value="c" state="⬛" />
+		<Tile value="k" state="⬛" />
 	</div>
-	<div>The letter <strong>I</strong> is in the word but in the wrong spot.</div>
+	<div>The letter <strong>S</strong> is in the word but in the wrong spot.</div>
 	<div class="row">
-		<Tile value="v" state="🔳" />
-		<Tile value="a" state="🔳" />
-		<Tile value="g" state="🔳" />
+		<Tile value="v" state="⬛" />
+		<Tile value="a" state="⬛" />
+		<Tile value="g" state="⬛" />
 		<Tile value="u" state="⬛" />
-		<Tile value="e" state="🔳" />
+		<Tile value="e" state="⬛" />
 	</div>
-	<div>The letter <strong>U</strong> is not in the word in any spot.</div>
-</div>
-<div>
-	This is a recreation of the original <a
-		href="https://www.nytimes.com/games/wordle/"
-		target="_blank"
-		rel="noreferrer">Wordle</a
-	>
-	by Josh Wardle with additional modes and features, allowing you to play infinite wordles. Switch
-	to infinite mode to play an unlimited number of times.
-	<br /><br />
-	Open the settings menu to see some of the additional features.
-	<br />
-	Written with Svelte, in Typescript by
-	<a href="https://github.com/MikhaD" target="_blank" rel="noreferrer">MikhaD</a>.
+	<div>None of the letters are in the word in any spot.</div>
+	<div class="row">
+		<Tile value="c" state="🟩" />
+		<Tile value="o" state="🟩" />
+		<Tile value="o" state="🟩" />
+		<Tile value="t" state="🟩" />
+		<Tile value="s" state="🟩" />
+	</div>
+	<div>The word <strong>COOTS</strong> is correct.</div>
 </div>
 
 <style lang="scss">

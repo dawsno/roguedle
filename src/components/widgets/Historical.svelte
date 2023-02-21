@@ -61,7 +61,7 @@
 
 		e.currentTarget.dispatchEvent(custom_event("close", null, { bubbles: true }));
 		showSettings = false;
-		toaster.pop(`${GameMode[$mode]} wordle #${newWordNum}`, 2);
+		toaster.pop(`${GameMode[$mode]} roguedle #${newWordNum}`, 2);
 		reset();
 	}
 	mode.subscribe(() => {
