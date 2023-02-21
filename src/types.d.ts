@@ -1,100 +1,111 @@
 /** A list of words of the same length */
 type Words = WordData & {
-	contains: (word: string) => boolean;
+  contains: (word: string) => boolean;
 };
 
 type WordData = {
-	/** A list of possible words to guess */
-	words: string[];
-	/** A list of words that are valid when input by the user but will never get chosen as the word to guess */
-	valid: string[];
+  /** A list of possible words to guess */
+  words: string[];
+  /** A list of words that are valid when input by the user but will never get chosen as the word to guess */
+  valid: string[];
 };
 
 type RowData = {
-	length: number;
-	guess: number;
+  length: number;
+  guess: number;
 };
 
 type LetterState = "🔳" | "⬛" | "🟨" | "🟩";
 
 type GameBoard = {
-	words: string[],
-	state: LetterState[][],
+  words: string[];
+  state: LetterState[][];
 };
 
 type SettingType = "switch" | "dropdown" | "custom";
 
 type DictionaryEntry = {
-	word: string;
-	phonetic: string;
-	phonetics: Phonetic[];
-	origin: string;
-	meanings: Meaning[];
+  word: string;
+  phonetic: string;
+  phonetics: Phonetic[];
+  origin: string;
+  meanings: Meaning[];
 };
 
 type Meaning = {
-	partOfSpeech: string;
-	definitions: Definition[];
+  partOfSpeech: string;
+  definitions: Definition[];
 };
 
 type Definition = {
-	definition: string;
-	synonyms: string[];
-	antonyms: any[];
-	example?: string;
+  definition: string;
+  synonyms: string[];
+  antonyms: any[];
+  example?: string;
 };
 
 type Phonetic = {
-	text: string;
-	audio: string;
+  text: string;
+  audio: string;
 };
 
 type Guesses = {
-	"1": number;
-	"2": number;
-	"3": number;
-	"4": number;
-	"5": number;
-	"6": number;
-	"fail": number;
+  "1": number;
+  "2": number;
+  "3": number;
+  "4": number;
+  "5": number;
+  "6": number;
+  fail: number;
 };
 
 type ModeData = {
-	default: GameMode,
-	modes: Mode[],
+  default: GameMode;
+  modes: Mode[];
 };
 
 type Mode = {
-	name: string,
-	unit: number,
-	start: number,
-	seed: number,
-	historical: boolean,
-	icon?: string,
-	streak?: boolean,
-	useTimeZone?: boolean,
+  name: string;
+  unit: number;
+  start: number;
+  seed: number;
+  historical: boolean;
+  icon?: string;
+  streak?: boolean;
+  useTimeZone?: boolean;
 };
 
 type HardModeData = {
-	pos: number,
-	char: string,
-	type: "🟩" | "🟨" | "⬛",
+  pos: number;
+  char: string;
+  type: "🟩" | "🟨" | "⬛";
 };
 
 type Subscriber<T> = [(val: T) => void, (val?: T) => void];
 
 type Direction = "top" | "right" | "bottom" | "left";
 
-type Swipe = CustomEvent<{ direction: Direction; }>;
+type Swipe = CustomEvent<{ direction: Direction }>;
 
-type ArtifactType = "AfterGuess" | "ChangeValue" | "OnGuess"| "OnLoss"|"OnSacrifice"|"OnUse"|"Sacrifice"|"StartOfRound"|"Usable"|"WordGeneration";
+type ArtifactType =
+  | "AfterGuess"
+  | "ChangeValue"
+  | "OnGuess"
+  | "OnLoss"
+  | "OnSacrifice"
+  | "OnUse"
+  | "Sacrifice"
+  | "StartOfRound"
+  | "Usable"
+  | "WordGeneration";
 
 type ArtifactState = {
-	id: number,
-	artifactType: ArtifactType,
-	artifactBool?: boolean,
-	artifactData?: number,
-	name:string,
-	imgString:string,
-	effectText:string,
+  id: number;
+  artifactType: ArtifactType;
+  artifactBool?: boolean;
+  artifactData?: number;
+  artifactStringData?: string;
+  name: string;
+  imgString: string;
+  effectText: string;
 };
