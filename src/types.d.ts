@@ -94,4 +94,7 @@ type ArtifactState = {
 	artifactType: ArtifactType,
 	artifactBool?: boolean,
 	artifactData?: number,
+	name:string,
+	imgString:string,
+	effectText:string,
 };
