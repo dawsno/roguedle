@@ -1,27 +1,38 @@
 import type { GameState } from "./utils";
+import { ROWS } from "./utils";
 
 export abstract class Artifact {
   public state: ArtifactState;
-  constructor(state: ArtifactState) {
+  public constructor(state: ArtifactState) {
     this.state.id = state.id;
+    this.state.canHaveMultiple = state.canHaveMultiple;
     this.state.artifactType = state.artifactType;
     this.state.artifactBool = state.artifactBool;
     this.state.artifactData = state.artifactData;
     this.state.imgString = state.imgString;
     this.state.name = state.name;
+    this.state.effectText = state.effectText;
+    this.state.artifactStringData = state.artifactStringData;
   }
 
-  abstract artifactEffect(inputString: string): string;
-  abstract condition(gameState: GameState): boolean;
-  abstract updateState(artifactState: ArtifactState);
-  static generateArtifact(id: number): Artifact {
+  public abstract artifactEffect(inputString?: string): string;
+  public abstract removeArtifact();
+  public abstract condition(gameState: GameState): boolean;
+  public abstract updateState(artifactState: ArtifactState);
+  public static generateArtifact(
+    id: number,
+    gameState: GameState,
+    artifactState?: ArtifactState
+  ): Artifact {
     var artifact: Artifact;
     var state: ArtifactState;
     state.id = id;
+    state.canHaveMultiple = false;
     switch (id) {
       case 1:
         state.name = "Yellow Potion";
         state.imgString = "YellowPotion.png";
+        state.artifactType = ArtifactType.StartOfRound;
         break;
       case 2:
         state.name = "Green Potion";
@@ -29,7 +40,11 @@ export abstract class Artifact {
         break;
       case 3:
         state.name = "Curious Coots";
-        state.imgString = "CuriosCoots.png";
+        state.imgString = "CuriosCoots1.png";
+        state.artifactType = ArtifactType.ChangeValue;
+        state.artifactData = 1; // initial 1 extra guess
+        state.effectText = "Gain an extra guess.";
+        artifact = new CuriousCoots(state);
         break;
       case 4:
         state.name = "Artifact Seeker";
@@ -65,7 +80,21 @@ export abstract class Artifact {
         break;
       case 12:
         state.name = "Alphabet Roulette";
-        state.imgString = "AlphabetRoulette.png";
+        state.canHaveMultiple = true;
+        state.artifactType = ArtifactType.WordGeneration;
+        var character: string;
+        gameState.artifactStates.forEach((element) => {
+          var excludedLetters = new Array<string>();
+          if (element.id == 12) {
+            excludedLetters.push(element.artifactStringData.charAt(0));
+          }
+        });
+        state.imgString = "AlphabetRoulette" + character + ".png";
+        state.effectText =
+          "Increased chance for the word to start with the letter '" +
+          character +
+          "'";
+        state.artifactStringData = character + "-";
         break;
       case 13:
         state.name = "Conjure Conclusion";
@@ -340,6 +369,21 @@ export abstract class Artifact {
         state.imgString = "SelfishSuffix.png";
         break;
     }
+    artifact.state = artifactState ?? state;
     return artifact;
+  }
+}
+export class CuriousCoots extends Artifact {
+  artifactEffect(inputString?: string): string {
+    throw new Error("Method not implemented.");
+  }
+  removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
   }
 }

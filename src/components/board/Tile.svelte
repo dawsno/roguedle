@@ -56,18 +56,35 @@
       border-color: var(--border-primary);
     }
   }
+  @font-face {
+    font-family: NerkoOne;
+    src: url("../../../public/fonts/NerkoOne-Regular.eot")
+        format("embedded-opentype"),
+      url("../../../public/fonts/NerkoOne-Regular.eot"),
+      url("../../../public/fonts/NerkoOne-Regular.ttf") format("truetype"),
+      url("../../../public/fonts/NerkoOne-Regular.woff2") format("woff2"),
+      url("../../../public/fonts/NerkoOne-Regular.woff") format("woff"),
+      url("../../../public/fonts/NerkoOne-Regular.svg#NeroOne-Regular")
+        format("svg");
+  }
   .tile {
-    font-size: min(5.5vw, 2rem);
+    color: black;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-text-stroke: 1px #fff9e1;
+    font-size: min(6vw, 3rem);
     font-weight: bold;
     text-transform: uppercase;
     position: relative;
     transform-style: preserve-3d;
+    font-family: "NerkoOne";
     &[data-animation="bounce"] {
       animation: bounce 1s;
     }
   }
   .back,
   .front {
+    border-radius: min(7px, 1vw);
     display: grid;
     place-items: center;
     position: absolute;
@@ -78,18 +95,23 @@
   }
   .front {
     border: 2px solid var(--border-primary);
+    background: none;
     transform: rotateX(0deg);
-    color: var(--fg-primary);
   }
   .back {
-    background: var(--color-absent);
+    background: url("../../../public/tiles/slotDarkGrey.png");
+    background-size: 100%;
     transform: rotateX(180deg);
   }
   .🟩 .back {
-    background: var(--color-correct);
+    background: url("../../../public/tiles/slotGreen.png");
+    background-size: 100%;
+    background-color: transparent;
   }
   .🟨 .back {
-    background: var(--color-present);
+    background: url("../../../public/tiles/slotYellow.png");
+    background-size: 100%;
+    background-color: transparent;
   }
   :global(.complete) .tile:not(.🔳) .front {
     transition-delay: inherit !important;
