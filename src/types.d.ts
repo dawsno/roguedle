@@ -87,20 +87,22 @@ type Direction = "top" | "right" | "bottom" | "left";
 
 type Swipe = CustomEvent<{ direction: Direction }>;
 
-type ArtifactType =
-  | "AfterGuess"
-  | "ChangeValue"
-  | "OnGuess"
-  | "OnLoss"
-  | "OnSacrifice"
-  | "OnUse"
-  | "Sacrifice"
-  | "StartOfRound"
-  | "Usable"
-  | "WordGeneration";
+enum ArtifactType {
+  "AfterGuess",
+  "ChangeValue",
+  "OnGuess",
+  "OnLoss",
+  "OnSacrifice",
+  "OnUse",
+  "Sacrifice",
+  "StartOfRound",
+  "Usable",
+  "WordGeneration",
+}
 
 type ArtifactState = {
   id: number;
+  canHaveMultiple: boolean;
   artifactType: ArtifactType;
   artifactBool?: boolean;
   artifactData?: number;

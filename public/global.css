@@ -25,7 +25,7 @@
 
 	--game-width: 500px;
 
-	--fg-primary: #d7dadc;
+	--fg-primary: #e6e6e6;
 	--fg-secondary: #818384;
 	--icon-color: #565758;
 	--border-primary: #3a3a3c;
@@ -35,11 +35,11 @@
 	--bg-primary: #121213;
 
 	--red: #9C2323;
-	--color-present: #b59f3b;
-	--color-correct: #538d4e;
-	--color-absent: var(--border-primary);
-	--evaluated-key-color: var(--fg-primary);
-	--key-bg: var(--fg-secondary);
+	--color-present: "../../../public/tiles/slotYellow.png";
+	--color-correct: "../../../public/tiles/slotGreen.png";
+	--color-absent: "../../../public/tiles/slotDarkGray.png";
+	--evaluated-key-color: "../../../public/tiles/slotDarkGray.png"
+	--key-bg: "../../../public/tiles/slotGray.png";
 }
 
 body {
@@ -57,16 +57,16 @@ body {
 	--bg-primary: #ffffff;
 
 	--red: #C42C2C;
-	--color-present: #c9b458;
-	--color-correct: #6aaa64;
-	--color-absent: var(--fg-secondary);
-	--evaluated-key-color: var(--bg-primary);
-	--key-bg: var(--border-primary);
+	--color-present: "../../../public/tiles/slotYellow.png";
+	--color-correct: "../../../public/tiles/slotGreen.png";
+	--color-absent: "../../../public/tiles/slotDarkGray.png";
+	--evaluated-key-color: "../../../public/tiles/slotDarkGray.png"
+	--key-bg: "../../../public/tiles/slotGray.png";
 }
 
 .colorblind {
-	--color-correct: #f5793a;
-	--color-present: #85c0f9;
+	--color-correct: "../../../public/tiles/slotRed.png";
+	--color-present: "../../../public/tiles/slotBlue.png";
 }
 
 h3 {

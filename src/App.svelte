@@ -49,6 +49,11 @@
     localStorage.setItem("mode", `${m}`);
     window.location.hash = GameMode[m];
     stats = new Stats(localStorage.getItem(`stats-${m}`) || m);
+    if (modeData.modes[m].historical) {
+      state = new GameState(m, localStorage.getItem(`state-${m}-h`));
+    } else {
+      state = new GameState(m, localStorage.getItem(`state-${m}`));
+    }
     var wordsList;
     switch (COLS) {
       case 5:
@@ -82,11 +87,6 @@
       wordsList[
         seededRandomInt(0, wordsList.length, modeData.modes[$mode].seed)
       ];
-    if (modeData.modes[m].historical) {
-      state = new GameState(m, localStorage.getItem(`state-${m}-h`));
-    } else {
-      state = new GameState(m, localStorage.getItem(`state-${m}`));
-    }
     // Set the letter states when data for a new game mode is loaded so the keyboard is correct
     letterStates.set(new LetterStates(state.board));
   });

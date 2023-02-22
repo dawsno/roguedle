@@ -1,9 +1,17 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
-
+  import { Settings } from "../../utils";
   export let letter: string;
   export let state: LetterState = "🔳";
 
+  var temp = new Settings(localStorage.getItem("settings"));
+  let colorMode: boolean = temp.colorblind;
+  let present = colorMode
+    ? "../../../public/tiles/slotBlue.png"
+    : "../../../public/tiles/slotYellow.png";
+  let correct = colorMode
+    ? "../../../public/tiles/slotRed.png"
+    : "../../../public/tiles/slotGreen.png";
   const dispatch = createEventDispatcher();
 </script>
 
@@ -18,18 +26,25 @@
 
 <style>
   div {
-    font-size: auto;
+    font-size: min(2em, 4vw);
     font-weight: bold;
     text-transform: uppercase;
+    -webkit-text-stroke: 2px black;
+    color: white;
     border-radius: 4px;
     height: 4em;
     max-width: max(3em, 3vw);
-    max-height: 4em;
+    max-width: 2em;
+    max-height: 2em;
     background: var(--key-bg);
     cursor: pointer;
     display: grid;
     place-items: center;
     flex: 1;
+    background: url("../../../public/tiles/slotGrey.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
     transition: background-color 0.3s ease-in-out;
   }
   :global(.guesses) div {
@@ -42,17 +57,26 @@
   }
   .big {
     font-size: auto;
-    max-width: max(6em, 5vw);
-    max-height: 4em;
+    max-width: max(3.75em, 5vw);
+    max-height: 2em;
     height: 4em;
   }
   .⬛ {
-    background: var(--color-absent);
+    background: url("../../../public/tiles/slotDarkGrey.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
   }
   .🟨 {
-    background: var(--color-present);
+    background-image: url("../../../public/tiles/slotYellow.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
   }
   .🟩 {
-    background: var(--color-correct);
+    background: url("../../../public/tiles/slotGreen.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 </style>

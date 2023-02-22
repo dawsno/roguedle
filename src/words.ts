@@ -3640,7 +3640,6 @@ const words = {
     "kiers",
     "kieve",
     "kikay",
-    "kikes",
     "kikoi",
     "kilig",
     "kilim",

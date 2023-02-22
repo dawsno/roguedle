@@ -530,3 +530,13 @@ export function failed(s: GameState) {
       s.board.state[s.guesses - 1].join("") === "🟩".repeat(COLS))
   );
 }
+export function getWordGenerationConstraints(s: GameState): string[] {
+  var constraints = new Array<string>();
+  var artifacts = s.artifactStates;
+  artifacts.forEach((state) => {
+    if (state.artifactType == ArtifactType.WordGeneration) {
+      constraints.push(state.artifactStringData);
+    }
+  });
+  return constraints;
+}

@@ -95,7 +95,7 @@
     align-items: center;
     margin-bottom: 2px;
     padding-top: 5px;
-    background-color: var(--bg-primary);
+    background-color: white;
   }
   .row {
     justify-content: center;
@@ -110,7 +110,9 @@
     padding: 0 30px;
   }
   svg {
-    fill: var(--fg-primary);
-    width: 24px;
+    stroke: black;
+    color: white;
+    stroke-width: 2px;
+    width: max(1em, 2vw);
   }
 </style>
