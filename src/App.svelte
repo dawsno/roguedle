@@ -9,6 +9,7 @@
     getWordNumber,
     words,
     COLS,
+    generateWord,
   } from "./utils";
   import Game from "./components/Game.svelte";
   import { letterStates, settings, mode } from "./stores";
@@ -45,48 +46,17 @@
       modeData.modes[modeVal].start;
     modeData.modes[modeVal].historical = true;
   }
-  mode.subscribe((m) => {
+  mode.subscribe(async (m) => {
     localStorage.setItem("mode", `${m}`);
     window.location.hash = GameMode[m];
     stats = new Stats(localStorage.getItem(`stats-${m}`) || m);
     if (modeData.modes[m].historical) {
       state = new GameState(m, localStorage.getItem(`state-${m}-h`));
+      word = await generateWord(state);
     } else {
       state = new GameState(m, localStorage.getItem(`state-${m}`));
+      word = await generateWord(state);
     }
-    var wordsList;
-    switch (COLS) {
-      case 5:
-        wordsList = words.words5;
-        break;
-      case 6:
-        wordsList = words.words6;
-        break;
-      case 7:
-        wordsList = words.words7;
-        break;
-      case 8:
-        wordsList = words.words8;
-        break;
-      case 9:
-        wordsList = words.words9;
-        break;
-      case 10:
-        wordsList = words.words10;
-        break;
-      case 11:
-        wordsList = words.words11;
-        break;
-      case 12:
-        wordsList = words.words12;
-        break;
-      default:
-        wordsList = words.words5;
-    }
-    word =
-      wordsList[
-        seededRandomInt(0, wordsList.length, modeData.modes[$mode].seed)
-      ];
     // Set the letter states when data for a new game mode is loaded so the keyboard is correct
     letterStates.set(new LetterStates(state.board));
   });

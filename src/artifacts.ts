@@ -1,9 +1,22 @@
-import type { GameState } from "./utils";
+import { ArtifactType } from "./enums";
+import { seededRandomInt, type GameState } from "./utils";
 import { ROWS } from "./utils";
-
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+function blankArtifactState(): ArtifactState {
+  var state: ArtifactState = {
+    id: 0,
+    canHaveMultiple: false,
+    artifactType: ArtifactType.undef,
+    name: "",
+    imgString: "",
+    effectText: "",
+  };
+  return state;
+}
 export abstract class Artifact {
   public state: ArtifactState;
   public constructor(state: ArtifactState) {
+    this.state = blankArtifactState();
     this.state.id = state.id;
     this.state.canHaveMultiple = state.canHaveMultiple;
     this.state.artifactType = state.artifactType;
@@ -25,7 +38,7 @@ export abstract class Artifact {
     artifactState?: ArtifactState
   ): Artifact {
     var artifact: Artifact;
-    var state: ArtifactState;
+    var state: ArtifactState = blankArtifactState();
     state.id = id;
     state.canHaveMultiple = false;
     switch (id) {
@@ -83,22 +96,48 @@ export abstract class Artifact {
         state.canHaveMultiple = true;
         state.artifactType = ArtifactType.WordGeneration;
         var character: string;
+        var excludedLetters = new Array<string>();
         gameState.artifactStates.forEach((element) => {
-          var excludedLetters = new Array<string>();
           if (element.id == 12) {
-            excludedLetters.push(element.artifactStringData.charAt(0));
+            excludedLetters.push(element.artifactStringData);
           }
         });
+        var filteredAlphabet = alphabet
+          .split("")
+          .filter((char) => !excludedLetters.includes(char));
+        var index = seededRandomInt(0, filteredAlphabet.length, gameState.seed);
+        character = filteredAlphabet[index];
         state.imgString = "AlphabetRoulette" + character + ".png";
         state.effectText =
           "Increased chance for the word to start with the letter '" +
           character +
           "'";
-        state.artifactStringData = character + "-";
+        state.artifactStringData = character;
+        artifact = new AlphabetRoulette(state);
         break;
       case 13:
         state.name = "Conjure Conclusion";
-        state.imgString = "ConjureConclusion.png";
+        state.canHaveMultiple = true;
+        state.artifactType = ArtifactType.WordGeneration;
+        var character: string;
+        var excludedLetters = new Array<string>();
+        gameState.artifactStates.forEach((element) => {
+          if (element.id == 13) {
+            excludedLetters.push(element.artifactStringData);
+          }
+        });
+        var filteredAlphabet = alphabet
+          .split("")
+          .filter((char) => !excludedLetters.includes(char));
+        var index = seededRandomInt(0, filteredAlphabet.length, gameState.seed);
+        character = filteredAlphabet[index];
+        state.imgString = "ConjureConclusion" + character + ".png";
+        state.effectText =
+          "Increased chance for the word to end with the letter '" +
+          character +
+          "'";
+        state.artifactStringData = character;
+        artifact = new ConnjureConclusion(state);
         break;
       case 14:
         state.name = "Freestyle";
@@ -107,18 +146,22 @@ export abstract class Artifact {
       case 15:
         state.name = "Noun Rocket";
         state.imgString = "NounRocket.png";
+        artifact = new NounRocket(state);
         break;
       case 16:
         state.name = "Virtuous Verbs";
         state.imgString = "VirtuousVerbs.png";
+        artifact = new VirtuousVerbs(state);
         break;
       case 17:
         state.name = "Adjective Archfiend";
         state.imgString = "AdjectiveArchfiend.png";
+        artifact = new AdjectiveArchfiend(state);
         break;
       case 18:
         state.name = "Adverb Affection";
         state.imgString = "AdverbAffection.png";
+        artifact = new AdverbAffection(state);
         break;
       case 19:
         state.name = "Dazzling Definition";
@@ -373,7 +416,7 @@ export abstract class Artifact {
     return artifact;
   }
 }
-export class CuriousCoots extends Artifact {
+class CuriousCoots extends Artifact {
   artifactEffect(inputString?: string): string {
     throw new Error("Method not implemented.");
   }
@@ -384,6 +427,126 @@ export class CuriousCoots extends Artifact {
     throw new Error("Method not implemented.");
   }
   updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class AlphabetRoulette extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    var seed = parseInt(inputString);
+    var randNum = seededRandomInt(0, 100, seed);
+    if (randNum < 35) {
+      return this.state.artifactStringData + "-";
+    } else {
+      return "";
+    }
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class ConnjureConclusion extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    var seed = parseInt(inputString);
+    var randNum = seededRandomInt(0, 100, seed);
+    if (randNum < 35) {
+      return "-" + this.state.artifactStringData;
+    } else {
+      return "";
+    }
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class NounRocket extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    var seed = parseInt(inputString);
+    var randNum = seededRandomInt(0, 100, seed);
+    if (randNum < 66) {
+      return "noun";
+    } else {
+      return "";
+    }
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class VirtuousVerbs extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    var seed = parseInt(inputString);
+    var randNum = seededRandomInt(0, 100, seed);
+    if (randNum < 66) {
+      return "verb";
+    } else {
+      return "";
+    }
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class AdjectiveArchfiend extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    var seed = parseInt(inputString);
+    var randNum = seededRandomInt(0, 100, seed);
+    if (randNum < 66) {
+      return "adjective";
+    } else {
+      return "";
+    }
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class AdverbAffection extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    var seed = parseInt(inputString);
+    var randNum = seededRandomInt(0, 100, seed);
+    if (randNum < 66) {
+      return "adverb";
+    } else {
+      return "";
+    }
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
     throw new Error("Method not implemented.");
   }
 }

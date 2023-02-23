@@ -1,6 +1,7 @@
 import seedRandom from "seedrandom";
-import { GameMode, ms } from "./enums";
+import { ArtifactType, GameMode, ms } from "./enums";
 import wordList from "./words";
+import { Artifact } from "./artifacts";
 
 export var ROWS = 6;
 export var COLS = 5;
@@ -274,6 +275,7 @@ export class GameState extends Storable {
 
   #valid = false;
   #mode: GameMode;
+  seed: number;
 
   constructor(mode: GameMode, data?: string) {
     super();
@@ -291,6 +293,7 @@ export class GameState extends Storable {
         words: Array(ROWS).fill(""),
         state: Array.from({ length: ROWS }, () => Array(COLS).fill("🔳")),
       };
+      this.seed = modeData.modes[mode].seed;
       this.artifactStates = new Array<ArtifactState>();
       this.#valid = true;
     }
@@ -530,13 +533,138 @@ export function failed(s: GameState) {
       s.board.state[s.guesses - 1].join("") === "🟩".repeat(COLS))
   );
 }
-export function getWordGenerationConstraints(s: GameState): string[] {
+function getWordGenerationConstraints(s: GameState): {
+  wordTypes: string[];
+  prefixes: string[];
+  suffixes: string[];
+} {
   var constraints = new Array<string>();
   var artifacts = s.artifactStates;
+  var wordTypes = new Array<string>();
+  var prefixes = new Array<string>();
+  var suffixes = new Array<string>();
   artifacts.forEach((state) => {
     if (state.artifactType == ArtifactType.WordGeneration) {
-      constraints.push(state.artifactStringData);
+      var artifact = Artifact.generateArtifact(state.id, s, state);
+      constraints.push(artifact.artifactEffect(s.seed.toString()));
     }
   });
-  return constraints;
+
+  for (var constraint of constraints) {
+    if (constraint.length === 2) {
+      if (constraint.startsWith("-")) {
+        suffixes.push(constraint.charAt(1));
+      } else if (constraint.endsWith("-")) {
+        prefixes.push(constraint.charAt(0));
+      }
+    } else if (constraint.length >= 4) {
+      wordTypes.push(constraint);
+    }
+  }
+  return { wordTypes, prefixes, suffixes };
+}
+export async function generateWord(gameState: GameState): Promise<string> {
+  var wordsList: string[];
+  switch (COLS) {
+    case 5:
+      wordsList = words.words5;
+      break;
+    case 6:
+      wordsList = words.words6;
+      break;
+    case 7:
+      wordsList = words.words7;
+      break;
+    case 8:
+      wordsList = words.words8;
+      break;
+    case 9:
+      wordsList = words.words9;
+      break;
+    case 10:
+      wordsList = words.words10;
+      break;
+    case 11:
+      wordsList = words.words11;
+      break;
+    case 12:
+      wordsList = words.words12;
+      break;
+    default:
+      wordsList = words.words5;
+  }
+  var constraints = getWordGenerationConstraints(gameState);
+  var wordtypes = constraints.wordTypes;
+  var suffixes = constraints.suffixes;
+  var prefixes = constraints.prefixes;
+  var filteredList = new Array<string>();
+  wordsList.filter((word) => {
+    const firstChar = word.charAt(0).toUpperCase();
+    const lastChar = word.charAt(word.length - 1).toUpperCase();
+    if (
+      (prefixes.includes(firstChar) || prefixes.length == 0) &&
+      (suffixes.includes(lastChar) || suffixes.length == 0)
+    ) {
+      filteredList.push(word);
+    }
+  });
+  if (filteredList.length == 0) {
+    wordsList.filter((word) => {
+      const firstChar = word.charAt(0).toUpperCase();
+      const lastChar = word.charAt(word.length - 1).toUpperCase();
+      if (
+        prefixes.includes(firstChar) ||
+        prefixes.length == 0 ||
+        suffixes.includes(lastChar) ||
+        suffixes.length == 0
+      ) {
+        filteredList.push(word);
+      }
+    });
+  }
+  if (filteredList.length == 0) {
+    filteredList = wordsList;
+  }
+  var word =
+    filteredList[seededRandomInt(0, filteredList.length, gameState.seed)];
+  var needsWordType = wordtypes.length != 0;
+  var i = 0;
+  var defintion = await getWordData(word);
+  while (needsWordType) {
+    var wordType;
+    var partOfSpeeches = defintion.meanings.map(
+      (meaning) => meaning.partOfSpeech
+    );
+    var hasWordType = wordtypes.some((partofSpeech) =>
+      partOfSpeeches.includes(partofSpeech)
+    );
+    if (i == 30) {
+      needsWordType = false;
+    }
+    if (hasWordType) {
+      needsWordType = false;
+    } else {
+      word =
+        filteredList[seededRandomInt(0, filteredList.length, gameState.seed)];
+      defintion = await getWordData(word);
+    }
+  }
+  return word;
+}
+const cache = new Map<string, Promise<DictionaryEntry>>();
+export async function getWordData(word: string): Promise<DictionaryEntry> {
+  if (!cache.has(word)) {
+    const data = await fetch(
+      `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`,
+      {
+        mode: "cors",
+      }
+    );
+    if (data.ok) {
+      cache.set(word, (await data.json())[0]);
+    } else {
+      throw new Error(`Failed to fetch definition`);
+    }
+  }
+  return cache.get(word);
 }

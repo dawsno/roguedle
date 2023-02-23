@@ -32,6 +32,7 @@
     LetterStates,
     words,
     Stats,
+    generateWord,
   } from "../utils";
   import { letterStates, settings, mode } from "../stores";
 
@@ -123,43 +124,11 @@
     lose();
   }
 
-  function reload() {
+  async function reload() {
     modeData.modes[$mode].historical = false;
     modeData.modes[$mode].seed = newSeed($mode);
     game = new GameState($mode, localStorage.getItem(`state-${$mode}`));
-    var wordsList;
-    switch (COLS) {
-      case 5:
-        wordsList = words.words5;
-        break;
-      case 6:
-        wordsList = words.words6;
-        break;
-      case 7:
-        wordsList = words.words7;
-        break;
-      case 8:
-        wordsList = words.words8;
-        break;
-      case 9:
-        wordsList = words.words9;
-        break;
-      case 10:
-        wordsList = words.words10;
-        break;
-      case 11:
-        wordsList = words.words11;
-        break;
-      case 12:
-        wordsList = words.words12;
-        break;
-      default:
-        wordsList = words.words5;
-    }
-    word =
-      wordsList[
-        seededRandomInt(0, wordsList.length, modeData.modes[$mode].seed)
-      ];
+    word = await generateWord(game);
     $letterStates = new LetterStates();
     showStats = false;
     showRefresh = false;

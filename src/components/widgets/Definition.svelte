@@ -1,28 +1,9 @@
-<script context="module" lang="ts">
-  const cache = new Map<string, Promise<DictionaryEntry>>();
-</script>
-
 <script lang="ts">
+  import { getWordData } from "../../utils";
+
   export let word: string;
   /** The maximum number of alternate definitions to provide*/
   export let alternates = 9;
-
-  async function getWordData(word: string): Promise<DictionaryEntry> {
-    if (!cache.has(word)) {
-      const data = await fetch(
-        `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`,
-        {
-          mode: "cors",
-        }
-      );
-      if (data.ok) {
-        cache.set(word, (await data.json())[0]);
-      } else {
-        throw new Error(`Failed to fetch definition`);
-      }
-    }
-    return cache.get(word);
-  }
 </script>
 
 <div class="def">

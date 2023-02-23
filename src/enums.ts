@@ -10,3 +10,16 @@ export const enum ms {
   HOUR = 1000 * 60 * 60,
   DAY = 1000 * 60 * 60 * 24,
 }
+export const enum ArtifactType {
+  "AfterGuess",
+  "ChangeValue",
+  "OnGuess",
+  "OnLoss",
+  "OnSacrifice",
+  "OnUse",
+  "Sacrifice",
+  "StartOfRound",
+  "Usable",
+  "WordGeneration",
+  "undef",
+}
