@@ -111,7 +111,7 @@
 <style>
   .board {
     display: grid;
-    grid-template-rows: repeat(var(--rows));
+    grid-template-rows: repeat(var(--rows, 1fr));
     aspect-ratio: var(--cols) / var(--rows);
     position: relative;
     justify-content: center;

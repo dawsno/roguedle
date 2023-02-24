@@ -305,6 +305,7 @@ export class GameState extends Storable {
       };
       this.#valid = true;
     }
+    this.updateBoard();
   }
   get latestWord() {
     return this.board.words[this.guesses];
@@ -350,6 +351,7 @@ export class GameState extends Storable {
     return { pos: -1, char: "", type: "⬛" };
   }
   guess(word: string) {
+    ROWS = ROWS + 1;
     const characters = word.split("");
     const result = Array<LetterState>(COLS).fill("⬛");
     for (let i = 0; i < COLS; ++i) {
@@ -368,7 +370,6 @@ export class GameState extends Storable {
     return result;
   }
   private parse(str: string) {
-    // TODO make this update cols and rows
     const parsed = JSON.parse(str) as GameState;
     if (parsed.wordNumber !== getWordNumber(this.#mode)) return;
     this.active = parsed.active;
@@ -376,10 +377,17 @@ export class GameState extends Storable {
     this.validHard = parsed.validHard;
     this.time = parsed.time;
     this.artifactStates = parsed.artifactStates;
-    startOfRound(this);
     this.wordNumber = parsed.wordNumber;
     this.board = parsed.board;
     this.#valid = true;
+    startOfRound(this);
+  }
+  public updateBoard() {
+    //TODO make this work with guess decreases for curses
+    if (ROWS > this.board.state.length) {
+      this.board.words.push("");
+      this.board.state.push(Array<LetterState>(COLS).fill("🔳"));
+    }
   }
 }
 

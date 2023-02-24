@@ -36,6 +36,7 @@
   } from "../utils";
   import { letterStates, settings, mode } from "../stores";
   import Stat from "./widgets/stats/Stat.svelte";
+  import Row from "./board/Row.svelte";
 
   export let word: string;
   export let stats: Stats;
@@ -83,6 +84,7 @@
         }
       }
       game.board.state[game.guesses] = game.guess(word);
+      game.updateBoard();
       ++game.guesses;
       $letterStates.update(game.lastState, game.lastWord);
       $letterStates = $letterStates;
@@ -132,6 +134,7 @@
     modeData.modes[$mode].seed = seed;
     game = new GameState($mode, seed, localStorage.getItem(`state-${$mode}`));
     game = game;
+    //game.updateBoard();
     seed = seed + stats.streak;
     word = await generateWord(game, seed);
     $letterStates = new LetterStates();
