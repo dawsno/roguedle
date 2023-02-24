@@ -1778,7 +1778,6 @@ const words = {
     "dicky",
     "dicot",
     "dicta",
-    "dicty",
     "diddy",
     "didis",
     "didos",

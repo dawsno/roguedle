@@ -53,9 +53,11 @@
     var seed = modeData.modes[m].seed + stats.streak;
     if (modeData.modes[m].historical) {
       state = new GameState(m, seed, localStorage.getItem(`state-${m}-h`));
+      state = state;
       word = await generateWord(state, seed);
     } else {
       state = new GameState(m, seed, localStorage.getItem(`state-${m}`));
+      state = state;
       word = await generateWord(state, seed);
     }
     // Set the letter states when data for a new game mode is loaded so the keyboard is correct

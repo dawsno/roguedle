@@ -62,10 +62,15 @@ export abstract class Artifact {
       case 4:
         state.name = "Artifact Seeker";
         state.imgString = "ArtifactSeeker.png";
+        artifact = new ArtifactSeeker(state);
+        state.artifactType = ArtifactType.ChangeValue;
+        state.effectText = "Find artifacts more often";
         break;
       case 5:
         state.name = "Thaumsaurus";
         state.imgString = "Thaumsaurus.png";
+        state.artifactType = ArtifactType.ChangeValue;
+        state.effectText = "The word length increases faster";
         break;
       case 6:
         state.name = "9th Life";
@@ -186,10 +191,15 @@ export abstract class Artifact {
       case 24:
         state.name = "Randomiser Rocket";
         state.imgString = "RandomiserRocket.png";
+        state.artifactType = ArtifactType.ChangeValue;
+        state.effectText =
+          "The length of the word is randomized. You are more likely to get 12 letter words";
         break;
       case 25:
         state.name = "Wormhole";
         state.imgString = "Wormhole.png";
+        state.artifactType = ArtifactType.ChangeValue;
+        state.effectText = "Increases the word length by 1";
         break;
       case 26:
         state.name = "Rare Letter Portal";
@@ -218,6 +228,9 @@ export abstract class Artifact {
       case 32:
         state.name = "Lucky Cat";
         state.imgString = "LuckyCat.png";
+        state.artifactType = ArtifactType.ChangeValue;
+        state.effectText =
+          "You get an additional choice when selecting an artifact";
         break;
       case 33:
         state.name = "Exorcise";
@@ -358,6 +371,9 @@ export abstract class Artifact {
       case 67:
         state.name = "Brain in a Jar";
         state.imgString = "BrainInAJar.png";
+        state.artifactType = ArtifactType.ChangeValue;
+        state.effectText =
+          "If this is your only artifact, +4 guesses. Otherwise destroy a random artifact that is not Brain in a Jar";
         break;
       case 68:
         state.name = "Desolate";
@@ -418,13 +434,29 @@ export abstract class Artifact {
 }
 class CuriousCoots extends Artifact {
   artifactEffect(inputString?: string): string {
-    throw new Error("Method not implemented.");
+    return "guess," + this.state.artifactData;
   }
   removeArtifact() {
     throw new Error("Method not implemented.");
   }
-  condition(gameState: GameState): boolean {
-    throw new Error("Method not implemented.");
+  public condition(gameState: GameState) {
+    var cootsCount = 0;
+    var artifactCount = 0;
+    gameState.artifactStates.forEach((artifactState) => {
+      if (artifactState.id == 3) {
+        ++artifactCount;
+        cootsCount = artifactState.artifactData + cootsCount;
+        var index = gameState.artifactStates.indexOf(artifactState);
+      }
+    });
+    gameState.artifactStates = gameState.artifactStates.filter(
+      (state) => state.id !== 3
+    );
+    var newCoots = Artifact.generateArtifact(3, gameState);
+    newCoots.state.artifactData = cootsCount;
+    newCoots.state.imgString = "CuriosCoots" + cootsCount + ".png";
+    gameState.artifactStates.push(newCoots.state);
+    return true;
   }
   updateState(artifactState: ArtifactState) {
     throw new Error("Method not implemented.");
@@ -545,6 +577,107 @@ class AdverbAffection extends Artifact {
   }
   public condition(gameState: GameState): boolean {
     throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class ArtifactSeeker extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    return "roundsBetweenArtifact,-1";
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class Thaumsaurus extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    throw "roundsBetweenIncrease,1";
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class RandomiserRocket extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    return "setWordLength," + this.state.artifactData;
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    var wordLength = seededRandomInt(5, 15, gameState.seed);
+    if (wordLength > 12) {
+      wordLength = 12;
+    }
+    this.state.artifactData = wordLength;
+    return true;
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class Wormhole extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    return "wordLength,1";
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class LuckyCat extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    return "numArtifactChoices,1";
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class BrainInAJar extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    return "guess,4";
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    if (gameState.artifactStates.length == 1) {
+      return true;
+    } else {
+      var seed = gameState.seed;
+      var index = seededRandomInt(0, gameState.artifactStates.length, seed);
+      while (gameState.artifactStates[index].id != 67) {
+        index = seededRandomInt(0, gameState.artifactStates.length, seed + 1);
+      }
+      gameState.artifactStates = gameState.artifactStates.filter(
+        (obj) => obj.id !== 67
+      );
+      return false;
+    }
   }
   public updateState(artifactState: ArtifactState) {
     throw new Error("Method not implemented.");

@@ -375,11 +375,11 @@ export class GameState extends Storable {
     this.guesses = parsed.guesses;
     this.validHard = parsed.validHard;
     this.time = parsed.time;
+    this.artifactStates = parsed.artifactStates;
+    startOfRound(this);
     this.wordNumber = parsed.wordNumber;
     this.board = parsed.board;
-    this.artifactStates = parsed.artifactStates;
     this.#valid = true;
-    startOfRound(this);
   }
 }
 
@@ -683,14 +683,18 @@ export async function getWordData(word: string): Promise<DictionaryEntry> {
 
 export function startOfRound(gamesState: GameState) {
   COLS = initColumns;
-  ROWS = ROWS + 1;
-  //gamesState.seed =
+  ROWS = initRows;
+  roundsBetweenArtifact = initRoundsBetweenArtifact;
+  roundsBetweenIncrease = initRoundsBetweenIncrease;
+  artifactChoices = initArtifactChoices;
+  updateValues(gamesState);
+}
+function updateValues(gameState: GameState) {
   var valsToUpdate = new Array<string>();
-  var artifacts = gamesState.artifactStates;
-  artifacts.forEach((state) => {
+  gameState.artifactStates.forEach((state) => {
     if (state.artifactType == ArtifactType.ChangeValue) {
-      var artifact = Artifact.generateArtifact(state.id, gamesState, state);
-      if (artifact.condition(gamesState)) {
+      var artifact = Artifact.generateArtifact(state.id, gameState, state);
+      if (artifact.condition(gameState)) {
         valsToUpdate.push(artifact.artifactEffect(""));
       }
     }
