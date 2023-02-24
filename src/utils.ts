@@ -2,9 +2,16 @@ import seedRandom from "seedrandom";
 import { ArtifactType, GameMode, ms } from "./enums";
 import wordList from "./words";
 import { Artifact } from "./artifacts";
-
-export var ROWS = 6;
-export var COLS = 5;
+const initRows = 6;
+const initColumns = 5;
+const initArtifactChoices = 2;
+const initRoundsBetweenIncrease = 2;
+const initRoundsBetweenArtifact = 2;
+export var artifactChoices = initArtifactChoices;
+export var roundsBetweenIncrease = initRoundsBetweenIncrease;
+export var roundsBetweenArtifact = initRoundsBetweenArtifact;
+export var ROWS = initRows;
+export var COLS = initColumns;
 
 export const words = {
   ...wordList,
@@ -191,16 +198,15 @@ export function newSeed(mode: GameMode, time?: number) {
       return now - (now % ms.SECOND);
     // case GameMode.minutely:
     // 	return now - (now % ms.MINUTE);
-    case GameMode.testing:
-      return now - (now % ms.SECOND);
+    /*case GameMode.testing:
+      return now - (now % ms.SECOND);*/
   }
 }
-
 export const modeData: ModeData = {
-  default: GameMode.testing,
+  default: GameMode.ludwig,
   modes: [
     {
-      name: "Roguele",
+      name: "Roguedle",
       unit: ms.DAY,
       start: 1642370400000, // 17/01/2022 UTC+2
       seed: newSeed(GameMode.rougedle),
@@ -214,17 +220,17 @@ export const modeData: ModeData = {
       start: 1642528800000, // 18/01/2022 8:00pm UTC+2
       seed: newSeed(GameMode.ludwig),
       historical: false,
-      icon: "m50,7h100v33c0,40 -35,40 -35,60c0,20 35,20 35,60v33h-100v-33c0,-40 35,-40 35,-60c0,-20 -35,-20 -35,-60z",
+      icon: "m7,100c0,-50 68,-50 93,0c25,50 93,50 93,0c0,-50 -68,-50 -93,0c-25,50 -93,50 -93,0z",
       streak: true,
     },
-    {
+    /*{
       name: "Test",
       unit: ms.SECOND,
       start: 1642428600000, // 17/01/2022 4:10:00pm UTC+2
       seed: newSeed(GameMode.testing),
       historical: false,
-      icon: "m7,100c0,-50 68,-50 93,0c25,50 93,50 93,0c0,-50 -68,-50 -93,0c-25,50 -93,50 -93,0z",
-    },
+      icon: "",
+    },*/
   ],
 };
 /**
@@ -277,11 +283,12 @@ export class GameState extends Storable {
   #mode: GameMode;
   seed: number;
 
-  constructor(mode: GameMode, data?: string) {
+  constructor(mode: GameMode, seed: number, data?: string) {
     super();
     this.#mode = mode;
     if (data) {
       this.parse(data);
+      this.seed = seed;
     }
     if (!this.#valid) {
       this.active = true;
@@ -289,12 +296,13 @@ export class GameState extends Storable {
       this.validHard = true;
       this.time = modeData.modes[mode].seed;
       this.wordNumber = getWordNumber(mode);
+      this.artifactStates = new Array<ArtifactState>();
+      this.seed = seed;
+      startOfRound(this);
       this.board = {
         words: Array(ROWS).fill(""),
         state: Array.from({ length: ROWS }, () => Array(COLS).fill("🔳")),
       };
-      this.seed = modeData.modes[mode].seed;
-      this.artifactStates = new Array<ArtifactState>();
       this.#valid = true;
     }
   }
@@ -371,6 +379,7 @@ export class GameState extends Storable {
     this.board = parsed.board;
     this.artifactStates = parsed.artifactStates;
     this.#valid = true;
+    startOfRound(this);
   }
 }
 
@@ -533,7 +542,10 @@ export function failed(s: GameState) {
       s.board.state[s.guesses - 1].join("") === "🟩".repeat(COLS))
   );
 }
-function getWordGenerationConstraints(s: GameState): {
+function getWordGenerationConstraints(
+  s: GameState,
+  seed: number
+): {
   wordTypes: string[];
   prefixes: string[];
   suffixes: string[];
@@ -546,7 +558,7 @@ function getWordGenerationConstraints(s: GameState): {
   artifacts.forEach((state) => {
     if (state.artifactType == ArtifactType.WordGeneration) {
       var artifact = Artifact.generateArtifact(state.id, s, state);
-      constraints.push(artifact.artifactEffect(s.seed.toString()));
+      constraints.push(artifact.artifactEffect(seed.toString()));
     }
   });
 
@@ -563,7 +575,10 @@ function getWordGenerationConstraints(s: GameState): {
   }
   return { wordTypes, prefixes, suffixes };
 }
-export async function generateWord(gameState: GameState): Promise<string> {
+export async function generateWord(
+  gameState: GameState,
+  seed: number
+): Promise<string> {
   var wordsList: string[];
   switch (COLS) {
     case 5:
@@ -593,7 +608,7 @@ export async function generateWord(gameState: GameState): Promise<string> {
     default:
       wordsList = words.words5;
   }
-  var constraints = getWordGenerationConstraints(gameState);
+  var constraints = getWordGenerationConstraints(gameState, seed);
   var wordtypes = constraints.wordTypes;
   var suffixes = constraints.suffixes;
   var prefixes = constraints.prefixes;
@@ -625,13 +640,11 @@ export async function generateWord(gameState: GameState): Promise<string> {
   if (filteredList.length == 0) {
     filteredList = wordsList;
   }
-  var word =
-    filteredList[seededRandomInt(0, filteredList.length, gameState.seed)];
+  var word = filteredList[seededRandomInt(0, filteredList.length, seed)];
   var needsWordType = wordtypes.length != 0;
   var i = 0;
   var defintion = await getWordData(word);
   while (needsWordType) {
-    var wordType;
     var partOfSpeeches = defintion.meanings.map(
       (meaning) => meaning.partOfSpeech
     );
@@ -644,8 +657,7 @@ export async function generateWord(gameState: GameState): Promise<string> {
     if (hasWordType) {
       needsWordType = false;
     } else {
-      word =
-        filteredList[seededRandomInt(0, filteredList.length, gameState.seed)];
+      word = filteredList[seededRandomInt(0, filteredList.length, seed)];
       defintion = await getWordData(word);
     }
   }
@@ -667,4 +679,46 @@ export async function getWordData(word: string): Promise<DictionaryEntry> {
     }
   }
   return cache.get(word);
+}
+
+export function startOfRound(gamesState: GameState) {
+  COLS = initColumns;
+  ROWS = ROWS + 1;
+  //gamesState.seed =
+  var valsToUpdate = new Array<string>();
+  var artifacts = gamesState.artifactStates;
+  artifacts.forEach((state) => {
+    if (state.artifactType == ArtifactType.ChangeValue) {
+      var artifact = Artifact.generateArtifact(state.id, gamesState, state);
+      if (artifact.condition(gamesState)) {
+        valsToUpdate.push(artifact.artifactEffect(""));
+      }
+    }
+  });
+  valsToUpdate.forEach((element) => {
+    var [variable, valueString] = element.split(",");
+    var value = parseInt(valueString);
+    switch (variable) {
+      case "guess":
+        ROWS = ROWS + value;
+        break;
+      case "wordLength":
+        COLS = COLS + value;
+        if (COLS > 12) {
+          COLS = 12;
+        }
+        break;
+      case "setWordLength":
+        COLS = value;
+        break;
+      case "numArtifactChoices":
+        artifactChoices = artifactChoices + value;
+        break;
+      case "roundsBetweenIncrease":
+        roundsBetweenIncrease = roundsBetweenIncrease + value;
+        break;
+      case "roundsBetweenArtifact":
+        roundsBetweenArtifact = roundsBetweenArtifact + value;
+    }
+  });
 }

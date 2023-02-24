@@ -35,6 +35,7 @@
     generateWord,
   } from "../utils";
   import { letterStates, settings, mode } from "../stores";
+  import Stat from "./widgets/stats/Stat.svelte";
 
   export let word: string;
   export let stats: Stats;
@@ -126,9 +127,11 @@
 
   async function reload() {
     modeData.modes[$mode].historical = false;
-    modeData.modes[$mode].seed = newSeed($mode);
-    game = new GameState($mode, localStorage.getItem(`state-${$mode}`));
-    word = await generateWord(game);
+    var seed = newSeed($mode) + stats.streak;
+    modeData.modes[$mode].seed = seed;
+    game = new GameState($mode, seed, localStorage.getItem(`state-${$mode}`));
+    seed = seed + stats.streak;
+    word = await generateWord(game, seed);
     $letterStates = new LetterStates();
     showStats = false;
     showRefresh = false;
