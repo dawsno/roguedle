@@ -61,7 +61,9 @@
       word = await generateWord(state, seed);
     }
     // Set the letter states when data for a new game mode is loaded so the keyboard is correct
-    letterStates.set(new LetterStates(state.board));
+    var letters = new LetterStates(state.board);
+    letters.getInfoStart(state, word);
+    letterStates.set(letters);
   });
 
   $: saveState(state);

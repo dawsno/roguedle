@@ -2,6 +2,7 @@ import seedRandom from "seedrandom";
 import { ArtifactType, GameMode, ms } from "./enums";
 import wordList from "./words";
 import { Artifact } from "./artifacts";
+import { get } from "svelte/store";
 const initRows = 6;
 const initColumns = 5;
 const initArtifactChoices = 2;
@@ -529,6 +530,167 @@ export class LetterStates {
         this[word[i]] = e;
       }
     });
+  }
+  removeRandLetter(game: GameState, word: string) {
+    this.update(game.lastState, game.lastWord);
+    var charsChecked = 0;
+    var charToRemove = "";
+    var alphabet = "abcdefghijklmnopqrstuvwxyz";
+    var shuffledAlphabet = alphabet.split("").sort((a, b) => {
+      const randomA = game.seed + a.charCodeAt(0);
+      const randomB = game.seed + b.charCodeAt(0);
+      return randomA - randomB;
+    });
+    while (charToRemove.length == 0) {
+      if (charsChecked == 26) {
+        return;
+      }
+      if (
+        this[shuffledAlphabet[charsChecked]] === "🔳" &&
+        !word.includes(shuffledAlphabet[charsChecked])
+      ) {
+        charToRemove = shuffledAlphabet[charsChecked];
+      }
+      charsChecked++;
+    }
+    this[charToRemove] = "⬛";
+  }
+  getInfoStart(game: GameState, word: string): [LetterState[], string] {
+    var information = new Array<LetterState>();
+    var infoWord = "";
+    var consonant = game.artifactStates.some((a) => a.id === 40);
+    var rareLetter = game.artifactStates.some((a) => a.id === 26);
+    var syllable = game.artifactStates.some((a) => a.id === 41);
+    var silverKey = game.artifactStates.some((a) => a.id === 60);
+    var skeletonKey = game.artifactStates.some((a) => a.id === 62);
+    var yellowKey = game.artifactStates.some((a) => a.id === 59);
+    if (rareLetter) {
+      // add yellow to keyboard
+      var rareLetters: string = "fywkvxzjq";
+      var result = "";
+      for (let i = 0; i < rareLetters.length; i++) {
+        const char = rareLetters[i];
+        if (word.includes(char) && !result.includes(char)) {
+          result += char;
+        }
+      }
+      if (result.length > 0) {
+        var ind = seededRandomInt(0, result.length, game.seed);
+        var char = result.charAt(ind);
+        this[char] = "🟨";
+      }
+    }
+    if (consonant) {
+      // add yellow to keyboard
+      var consonants = "bcdfghjklmnpqrstvwxyz";
+      var result = "";
+      for (let i = 0; i < consonants.length; i++) {
+        const char = consonants[i];
+        if (word.includes(char) && !result.includes(char)) {
+          result += char;
+        }
+      }
+      var yellowLetters = result.split("").sort((a, b) => {
+        const randomA = game.seed + a.charCodeAt(0);
+        const randomB = game.seed + b.charCodeAt(0);
+        return randomA - randomB;
+      });
+      yellowLetters.every((letter) => {
+        if (this[letter] === "🔳") {
+          this[letter] = "🟨";
+          return false;
+        }
+      });
+    }
+    if (syllable) {
+      const vowels = "aeiou";
+      var result = "";
+      for (let i = 0; i < vowels.length; i++) {
+        const char = vowels[i];
+        if (word.includes(char) && !result.includes(char)) {
+          result += char;
+        }
+      }
+      var yellowLetters = result.split("").sort((a, b) => {
+        const randomA = game.seed + a.charCodeAt(0);
+        const randomB = game.seed + b.charCodeAt(0);
+        return randomA - randomB;
+      });
+      yellowLetters.every((letter) => {
+        if (this[letter] === "🔳") {
+          this[letter] = "🟨";
+          return false;
+        }
+      });
+      // add yellow to keyboard
+    }
+    if (yellowKey) {
+      // add yellow to keyboard
+      var yellowLetters = word.split("").sort((a, b) => {
+        const randomA = game.seed + a.charCodeAt(0);
+        const randomB = game.seed + b.charCodeAt(0);
+        return randomA - randomB;
+      });
+      yellowLetters.every((letter) => {
+        if (this[letter] === "🔳") {
+          this[letter] = "🟨";
+          return false;
+        }
+      });
+    }
+    if (silverKey) {
+      var alphabet = "abcdefghijklmnopqrstuvwxyz";
+      var result = "";
+      for (let i = 0; i < alphabet.length; i++) {
+        const char = alphabet[i];
+        if (!word.includes(alphabet[i])) {
+          result += char;
+        }
+      }
+      var grayLetters = result.split("").sort((a, b) => {
+        const randomA = game.seed + a.charCodeAt(0);
+        const randomB = game.seed + b.charCodeAt(0);
+        return randomA - randomB;
+      });
+      var i = 0;
+      grayLetters.every((letter) => {
+        if (this[letter] === "🔳") {
+          this[letter] = "⬛";
+          ++i;
+          if (i >= 2) {
+            return false;
+          }
+          return true;
+        }
+      });
+    }
+    if (skeletonKey) {
+      var alphabet = "abcdefghijklmnopqrstuvwxyz";
+      var result = "";
+      for (let i = 0; i < alphabet.length; i++) {
+        const char = alphabet[i];
+        if (!word.includes(alphabet[i])) {
+          result += char;
+        }
+      }
+      var grayLetters = result.split("").sort((a, b) => {
+        const randomA = game.seed + a.charCodeAt(0);
+        const randomB = game.seed + b.charCodeAt(0);
+        return randomA - randomB;
+      });
+      var i = 0;
+      grayLetters.every((letter) => {
+        if (this[letter] === "🔳") {
+          this[letter] = "⬛";
+          ++i;
+          if (i >= 5) {
+            return false;
+          }
+          return true;
+        }
+      });
+    }
+    return [information, infoWord];
   }
 }
 

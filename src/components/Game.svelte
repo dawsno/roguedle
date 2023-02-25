@@ -60,31 +60,6 @@
   let board: Board;
   let timer: Timer;
 
-  function removeRandLetter() {
-    $letterStates.update(game.lastState, game.lastWord);
-    var charsChecked = 0;
-    var charToRemove = "";
-    var alphabet = "abcdefghijklmnopqrstuvwxyz";
-    var shuffledAlphabet = alphabet.split("").sort((a, b) => {
-      const randomA = game.seed + a.charCodeAt(0);
-      const randomB = game.seed + b.charCodeAt(0);
-      return randomA - randomB;
-    });
-    while (charToRemove.length == 0) {
-      if (charsChecked == 26) {
-        return;
-      }
-      if (
-        $letterStates[shuffledAlphabet[charsChecked]] === "🔳" &&
-        !word.includes(shuffledAlphabet[charsChecked])
-      ) {
-        charToRemove = shuffledAlphabet[charsChecked];
-      }
-      charsChecked++;
-    }
-    $letterStates[charToRemove] = "⬛";
-  }
-
   function submitWord() {
     //TODO make this so artifacts work like all others
     var freestyle = game.artifactStates.some((a) => a.id === 14);
@@ -126,17 +101,17 @@
       var hasClarity = game.artifactStates.some((a) => a.id === 38);
       var hasPurrfector = game.artifactStates.some((a) => a.id === 44);
       if (hasClarity) {
-        removeRandLetter();
+        $letterStates.removeRandLetter(game, word);
       }
       if (hasPurrfector) {
         if (game.guesses % 5 == 0) {
-          removeRandLetter();
-          removeRandLetter();
-          removeRandLetter();
-          removeRandLetter();
-          removeRandLetter();
-          removeRandLetter();
-          removeRandLetter();
+          $letterStates.removeRandLetter(game, word);
+          $letterStates.removeRandLetter(game, word);
+          $letterStates.removeRandLetter(game, word);
+          $letterStates.removeRandLetter(game, word);
+          $letterStates.removeRandLetter(game, word);
+          $letterStates.removeRandLetter(game, word);
+          $letterStates.removeRandLetter(game, word);
         }
       }
       $letterStates = $letterStates;
@@ -228,20 +203,16 @@
     modeData.modes[$mode].historical = false;
     var seed = newSeed($mode) + stats.streak;
     modeData.modes[$mode].seed = seed;
+    $letterStates = new LetterStates();
     game = new GameState($mode, seed, localStorage.getItem(`state-${$mode}`));
     game = game;
-    //game.updateBoard();
     seed = seed + stats.streak;
     word = await generateWord(game, seed);
-    $letterStates = new LetterStates();
+    $letterStates.getInfoStart(game, word);
+    $letterStates = $letterStates;
     showStats = false;
     showRefresh = false;
     timer.reset($mode);
-    //if (modeData.modes[$mode].historical) {
-    //  localStorage.setItem(`state-${$mode}-h`, game.toString());
-    //} else {
-    //  localStorage.setItem(`state-${$mode}`, game.toString());
-    //}
   }
 
   function setShowStatsTrue() {
