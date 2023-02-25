@@ -101,8 +101,7 @@
       on:click={() => dispatch("closeTutPopUp")}
       on:keydown={() => dispatch("closeTutPopUp")}
     >
-      double tap a row to see a word's definition, or how many words can be
-      played there
+      double tap a row to see a word's definition
       <span class="ok">OK</span>
     </div>
   {/if}

@@ -73,7 +73,7 @@
     vertical-align: middle;
     -webkit-text-stroke: 1px #fff9e1;
     font-size: min(6vw, 3rem);
-    font-weight: bold;
+    //font-weight: bold;
     text-transform: uppercase;
     position: relative;
     transform-style: preserve-3d;

@@ -38,8 +38,9 @@
 	--color-present: "../../../public/tiles/slotYellow.png";
 	--color-correct: "../../../public/tiles/slotGreen.png";
 	--color-absent: "../../../public/tiles/slotDarkGray.png";
-	--evaluated-key-color: "../../../public/tiles/slotDarkGray.png"
+	--evaluated-key-color: "../../../public/tiles/slotDarkGray.png";
 	--key-bg: "../../../public/tiles/slotGray.png";
+
 }
 
 body {

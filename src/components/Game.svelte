@@ -47,10 +47,12 @@
 
   setContext("toaster", toaster);
   const version = getContext<string>("version");
-
   // implement transition delay on keys
   const delay = DELAY_INCREMENT * ROWS + 800;
-
+  const allowedArtifacts = [
+    4, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 24, 25, 26, 32, 38, 40, 41,
+    44, 59, 60, 62, 67,
+  ];
   let showTutorial = $settings.tutorial === 3;
   let showSettings = false;
   let showStats = false;

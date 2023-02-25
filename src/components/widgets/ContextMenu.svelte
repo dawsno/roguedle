@@ -14,22 +14,9 @@
 
 <div class="ctx-menu" style="top: {y}px; left: {x}px;">
   {#if word !== ""}
-    <div>
-      Considering all hints, this row had:
-      <br /><br />
-      {pAns} possible answer{pAns > 1 ? "s" : ""}
-      <br />
-      {pSols} valid guess{pSols > 1 ? "es" : ""}
-    </div>
     <Definition {word} alternates={1} />
   {:else}
-    <div>
-      Considering all hints, there {pAns > 1 ? "are" : "is"}:
-      <br /><br />
-      {pAns} possible answer{pAns > 1 ? "s" : ""}
-      <br />
-      {pSols} valid guess{pSols > 1 ? "es" : ""}
-    </div>
+    <!-- TODO artifacts that you use by tapping on an empty-->
   {/if}
 </div>
 

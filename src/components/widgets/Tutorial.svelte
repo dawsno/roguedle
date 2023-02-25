@@ -27,7 +27,8 @@
     <Tile value="r" state="⬛" />
   </div>
   <div>
-    The letter <strong>C</strong> is in the word and in the correct spot.
+    The letter <strong>C</strong> is in the word and in the correct spot. The rest
+    of the letters are in the wrong spot.
   </div>
   <div class="row">
     <Tile value="s" state="🟨" />
@@ -37,14 +38,6 @@
     <Tile value="k" state="⬛" />
   </div>
   <div>The letter <strong>S</strong> is in the word but in the wrong spot.</div>
-  <div class="row">
-    <Tile value="v" state="⬛" />
-    <Tile value="a" state="⬛" />
-    <Tile value="g" state="⬛" />
-    <Tile value="u" state="⬛" />
-    <Tile value="e" state="⬛" />
-  </div>
-  <div>None of the letters are in the word in any spot.</div>
   <div class="row">
     <Tile value="c" state="🟩" />
     <Tile value="o" state="🟩" />
