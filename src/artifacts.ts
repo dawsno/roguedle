@@ -1,7 +1,7 @@
 import { ArtifactType } from "./enums";
 import { seededRandomInt, type GameState } from "./utils";
 import { ROWS } from "./utils";
-const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+export const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 function blankArtifactState(): ArtifactState {
   var state: ArtifactState = {
     id: 0,
@@ -62,15 +62,16 @@ export abstract class Artifact {
       case 4:
         state.name = "Artifact Seeker";
         state.imgString = "ArtifactSeeker.png";
-        artifact = new ArtifactSeeker(state);
         state.artifactType = ArtifactType.ChangeValue;
         state.effectText = "Find artifacts more often";
+        artifact = new ArtifactSeeker(state);
         break;
       case 5:
         state.name = "Thaumsaurus";
         state.imgString = "Thaumsaurus.png";
         state.artifactType = ArtifactType.ChangeValue;
         state.effectText = "The word length increases faster";
+        artifact = new Thaumsaurus(state);
         break;
       case 6:
         state.name = "9th Life";
@@ -83,18 +84,38 @@ export abstract class Artifact {
       case 8:
         state.name = "Golden Portal";
         state.imgString = "GoldenPortal.png";
+        state.artifactData = 3;
+        state.artifactType = ArtifactType.OnGuess;
+        state.effectText = "You may proceed with 3 yellow letters";
+        artifact = new GoldenPortal(state);
         break;
       case 9:
         state.name = "Grey Rabbit";
         state.imgString = "GreyRabbit.png";
+        var rng = seededRandomInt(0, 10, gameState.seed);
+        if (rng <= 2) {
+          state.imgString = "GreyRabbitRare.png";
+        }
+        state.artifactData = 2;
+        state.artifactType = ArtifactType.OnGuess;
+        state.effectText = "You may proceed with 2 gray letters";
+        artifact = new GreyRabbit(state);
         break;
       case 10:
         state.name = "Shadow Scrutinizer";
         state.imgString = "ShadowScrutinizer.png";
+        state.artifactType = ArtifactType.OnGuess;
+        state.effectText =
+          "If your guess would only reveal gray letters, gain an extra guess";
+        artifact = new ShadowScrutinizer(state);
         break;
       case 11:
         state.name = "Vigilant Hunter";
         state.imgString = "VigilantHunter.png";
+        state.artifactType = ArtifactType.OnGuess;
+        state.effectText =
+          "If your guess would only reveal yellow letters, gain an extra guess";
+        artifact = new VigilantHunter(state);
         break;
       case 12:
         state.name = "Alphabet Roulette";
@@ -147,6 +168,10 @@ export abstract class Artifact {
       case 14:
         state.name = "Freestyle";
         state.imgString = "Freestyle.png";
+        state.artifactType = ArtifactType.OnGuess;
+        state.artifactBool = true;
+        state.effectText = "You may submit 1 non-word guess per word";
+        artifact = new Freestyle(state);
         break;
       case 15:
         state.name = "Noun Rocket";
@@ -194,12 +219,14 @@ export abstract class Artifact {
         state.artifactType = ArtifactType.ChangeValue;
         state.effectText =
           "The length of the word is randomized. You are more likely to get 12 letter words";
+        artifact = new RandomiserRocket(state);
         break;
       case 25:
         state.name = "Wormhole";
         state.imgString = "Wormhole.png";
         state.artifactType = ArtifactType.ChangeValue;
         state.effectText = "Increases the word length by 1";
+        artifact = new Wormhole(state);
         break;
       case 26:
         state.name = "Rare Letter Portal";
@@ -231,6 +258,7 @@ export abstract class Artifact {
         state.artifactType = ArtifactType.ChangeValue;
         state.effectText =
           "You get an additional choice when selecting an artifact";
+        artifact = new LuckyCat(state);
         break;
       case 33:
         state.name = "Exorcise";
@@ -255,6 +283,11 @@ export abstract class Artifact {
       case 38:
         state.name = "Cat Like Clarity";
         state.imgString = "CatLikeClarity.png";
+        state.artifactType = ArtifactType.OnGuess;
+        state.effectText =
+          "Reveal a new gray letter on the keyboard with every guess";
+        artifact = new CatLikeClarity(state);
+
         break;
       case 39:
         state.name = "Dark Matter Definition";
@@ -279,6 +312,10 @@ export abstract class Artifact {
       case 44:
         state.name = "Random Purrfector";
         state.imgString = "RandomPurrfector.png";
+        state.artifactType = ArtifactType.OnGuess;
+        state.effectText =
+          "Reveal a 7 gray letters on the keyboard with every 7 guesses";
+        artifact = new RandomPurrfector(state);
         break;
       case 45:
         state.name = "Speller Reborn";
@@ -374,6 +411,7 @@ export abstract class Artifact {
         state.artifactType = ArtifactType.ChangeValue;
         state.effectText =
           "If this is your only artifact, +4 guesses. Otherwise destroy a random artifact that is not Brain in a Jar";
+        artifact = new BrainInAJar(state);
         break;
       case 68:
         state.name = "Desolate";
@@ -678,6 +716,104 @@ class BrainInAJar extends Artifact {
       );
       return false;
     }
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class GoldenPortal extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    throw new Error("Method not implemented.");
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class GreyRabbit extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    throw new Error("Method not implemented.");
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class ShadowScrutinizer extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    throw new Error("Method not implemented.");
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class VigilantHunter extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    throw new Error("Method not implemented.");
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class Freestyle extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    throw new Error("Method not implemented.");
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class CatLikeClarity extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    throw new Error("Method not implemented.");
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class RandomPurrfector extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    throw new Error("Method not implemented.");
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
   }
   public updateState(artifactState: ArtifactState) {
     throw new Error("Method not implemented.");

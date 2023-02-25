@@ -351,7 +351,6 @@ export class GameState extends Storable {
     return { pos: -1, char: "", type: "⬛" };
   }
   guess(word: string) {
-    ROWS = ROWS + 1;
     const characters = word.split("");
     const result = Array<LetterState>(COLS).fill("⬛");
     for (let i = 0; i < COLS; ++i) {
@@ -733,4 +732,8 @@ function updateValues(gameState: GameState) {
         roundsBetweenArtifact = roundsBetweenArtifact + value;
     }
   });
+}
+
+export function incrementRow() {
+  ROWS = ROWS + 1;
 }

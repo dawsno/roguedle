@@ -33,10 +33,12 @@
     words,
     Stats,
     generateWord,
+    incrementRow,
   } from "../utils";
   import { letterStates, settings, mode } from "../stores";
   import Stat from "./widgets/stats/Stat.svelte";
   import Row from "./board/Row.svelte";
+  import { trusted } from "svelte/internal";
 
   export let word: string;
   export let stats: Stats;
@@ -58,11 +60,46 @@
   let board: Board;
   let timer: Timer;
 
+  function removeRandLetter() {
+    $letterStates.update(game.lastState, game.lastWord);
+    var charsChecked = 0;
+    var charToRemove = "";
+    var alphabet = "abcdefghijklmnopqrstuvwxyz";
+    var shuffledAlphabet = alphabet.split("").sort((a, b) => {
+      const randomA = game.seed + a.charCodeAt(0);
+      const randomB = game.seed + b.charCodeAt(0);
+      return randomA - randomB;
+    });
+    while (charToRemove.length == 0) {
+      if (charsChecked == 26) {
+        return;
+      }
+      if (
+        $letterStates[shuffledAlphabet[charsChecked]] === "🔳" &&
+        !word.includes(shuffledAlphabet[charsChecked])
+      ) {
+        charToRemove = shuffledAlphabet[charsChecked];
+      }
+      charsChecked++;
+    }
+    $letterStates[charToRemove] = "⬛";
+  }
+
   function submitWord() {
+    //TODO make this so artifacts work like all others
+    var freestyle = game.artifactStates.some((a) => a.id === 14);
+    var allowFreestyle = false;
+    if (freestyle) {
+      var freestyleIndex = game.artifactStates.findIndex((a) => a.id === 14);
+      if (game.artifactStates[freestyleIndex].artifactBool) {
+        game.artifactStates[freestyleIndex].artifactBool = false;
+        allowFreestyle = true;
+      }
+    }
     if (game.latestWord.length !== COLS) {
       toaster.pop("Not enough letters");
       board.shake(game.guesses);
-    } else if (words.contains(game.latestWord)) {
+    } else if (words.contains(game.latestWord) || allowFreestyle) {
       if (game.guesses > 0) {
         const hm = game.checkHardMode();
         if ($settings.hard[$mode]) {
@@ -84,12 +121,71 @@
         }
       }
       game.board.state[game.guesses] = game.guess(word);
-      game.updateBoard();
       ++game.guesses;
       $letterStates.update(game.lastState, game.lastWord);
+      var hasClarity = game.artifactStates.some((a) => a.id === 38);
+      var hasPurrfector = game.artifactStates.some((a) => a.id === 44);
+      if (hasClarity) {
+        removeRandLetter();
+      }
+      if (hasPurrfector) {
+        if (game.guesses % 5 == 0) {
+          removeRandLetter();
+          removeRandLetter();
+          removeRandLetter();
+          removeRandLetter();
+          removeRandLetter();
+          removeRandLetter();
+          removeRandLetter();
+        }
+      }
       $letterStates = $letterStates;
-      if (game.lastWord === word) win();
-      else if (game.guesses === ROWS) lose();
+      var hasShadow = game.artifactStates.some((a) => a.id === 10);
+      var hasHunter = game.artifactStates.some((a) => a.id === 11);
+      if (hasShadow) {
+        if (game.lastState.every((value) => value === "⬛")) {
+          incrementRow();
+        }
+      }
+      if (hasHunter) {
+        if (game.lastState.every((value) => value === "🟨")) {
+          incrementRow();
+        }
+      }
+      game.updateBoard();
+      var acceptedWin = game.lastWord === word;
+      var hasRabbit = game.artifactStates.some((a) => a.id === 9);
+      var hasPortal = game.artifactStates.some((a) => a.id === 8);
+      if (hasRabbit) {
+        var filteredList = game.lastState.filter((value) => value === "🟨");
+        acceptedWin =
+          filteredList.length <= 3 &&
+          game.lastState.every((value) => value === "🟩" || value === "🟨");
+      }
+      if (hasPortal) {
+        var filteredList = game.lastState.filter((value) => value === "⬛");
+        acceptedWin =
+          filteredList.length <= 2 &&
+          game.lastState.every((value) => value === "🟩" || value === "⬛");
+      }
+      if (hasPortal && hasRabbit) {
+        var yellowList = game.lastState.filter((value) => value === "🟨");
+        var grayList = game.lastState.filter((value) => value === "⬛");
+        if (yellowList.length <= 3 && grayList.length <= 3) {
+          acceptedWin = true;
+        }
+      }
+      if (acceptedWin) {
+        win();
+        if (freestyle) {
+          game.artifactStates[freestyleIndex].artifactBool = true;
+        }
+      } else if (game.guesses === ROWS) {
+        if (freestyle) {
+          game.artifactStates[freestyleIndex].artifactBool = true;
+        }
+        lose();
+      }
     } else {
       toaster.pop("Not in word list");
       board.shake(game.guesses);
