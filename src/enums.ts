@@ -21,5 +21,7 @@ export const enum ArtifactType {
   "StartOfRound",
   "Usable",
   "WordGeneration",
+  "wordInfo",
+  "keyboardInfo",
   "undef",
 }

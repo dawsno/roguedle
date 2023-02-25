@@ -231,6 +231,10 @@ export abstract class Artifact {
       case 26:
         state.name = "Rare Letter Portal";
         state.imgString = "RareLetterPortal.png";
+        state.artifactType = ArtifactType.keyboardInfo;
+        state.effectText =
+          "At the start of every round, show a letter with less than 10% usage in the word on the keyboard";
+        artifact = new RareLetterPortal(state);
         break;
       case 27:
         state.name = "Skipping Stone";
@@ -296,10 +300,18 @@ export abstract class Artifact {
       case 40:
         state.name = "Cosmic Consonant";
         state.imgString = "CosmicConsonant.png";
+        state.artifactType = ArtifactType.keyboardInfo;
+        state.effectText =
+          "At the start of every round, show a consonant in the word on the keyboard";
+        artifact = new CosmicConsonant(state);
         break;
       case 41:
         state.name = "Mevowel";
         state.imgString = "Mevowel.png";
+        state.artifactType = ArtifactType.keyboardInfo;
+        state.effectText =
+          "At the start of every round, show a consonant in the word on the keyboard";
+        artifact = new Mevowel(state);
         break;
       case 42:
         state.name = "Magnifying Glass";
@@ -376,10 +388,18 @@ export abstract class Artifact {
       case 59:
         state.name = "Golden Key";
         state.imgString = "GoldenKey.png";
+        state.artifactType = ArtifactType.keyboardInfo;
+        state.effectText =
+          "At the start of every round, show a letter in the word on the keyboard";
+        artifact = new GoldenKey(state);
         break;
       case 60:
         state.name = "Silver Key";
         state.imgString = "SilverKey.png";
+        state.artifactType = ArtifactType.keyboardInfo;
+        state.effectText =
+          "At the start of every round, show two letters not in the word on the keyboard";
+        artifact = new SilverKey(state);
         break;
       case 61:
         state.name = "Wishin' Definition";
@@ -388,6 +408,10 @@ export abstract class Artifact {
       case 62:
         state.name = "Skeleton Key";
         state.imgString = "SkeletonKey.png";
+        state.artifactType = ArtifactType.keyboardInfo;
+        state.effectText =
+          "At the start of every round, show five letters not in the word on the keyboard";
+        artifact = new SkeletonKey(state);
         break;
       case 63:
         state.name = "Demonic Letter Opener";
@@ -806,6 +830,90 @@ class CatLikeClarity extends Artifact {
   }
 }
 class RandomPurrfector extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    throw new Error("Method not implemented.");
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class RareLetterPortal extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    throw new Error("Method not implemented.");
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class Mevowel extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    throw new Error("Method not implemented.");
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class CosmicConsonant extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    throw new Error("Method not implemented.");
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class GoldenKey extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    throw new Error("Method not implemented.");
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class SilverKey extends Artifact {
+  public artifactEffect(inputString?: string): string {
+    throw new Error("Method not implemented.");
+  }
+  public removeArtifact() {
+    throw new Error("Method not implemented.");
+  }
+  public condition(gameState: GameState): boolean {
+    throw new Error("Method not implemented.");
+  }
+  public updateState(artifactState: ArtifactState) {
+    throw new Error("Method not implemented.");
+  }
+}
+class SkeletonKey extends Artifact {
   public artifactEffect(inputString?: string): string {
     throw new Error("Method not implemented.");
   }
