@@ -133,7 +133,7 @@ export abstract class Artifact {
           .filter((char) => !excludedLetters.includes(char));
         var index = seededRandomInt(0, filteredAlphabet.length, gameState.seed);
         character = filteredAlphabet[index];
-        state.imgString = "AlphabetRoulette" + character + ".png";
+        state.imgString = "AlphabetRoulette" + character.toUpperCase() + ".png";
         state.effectText =
           "Increased chance for the word to start with the letter '" +
           character +
@@ -157,7 +157,8 @@ export abstract class Artifact {
           .filter((char) => !excludedLetters.includes(char));
         var index = seededRandomInt(0, filteredAlphabet.length, gameState.seed);
         character = filteredAlphabet[index];
-        state.imgString = "ConjureConclusion" + character + ".png";
+        state.imgString =
+          "ConjureConclusion" + character.toUpperCase() + ".png";
         state.effectText =
           "Increased chance for the word to end with the letter '" +
           character +

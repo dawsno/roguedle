@@ -28,7 +28,6 @@
   let word: string;
   let state: GameState;
   let toaster: Toaster;
-
   settings.set(new Settings(localStorage.getItem("settings")));
   settings.subscribe((s) =>
     localStorage.setItem("settings", JSON.stringify(s))
@@ -77,7 +76,7 @@
   });
 
   $: saveState(state);
-  function saveState(state: GameState) {
+  export function saveState(state: GameState) {
     if (modeData.modes[$mode].historical) {
       localStorage.setItem(`state-${$mode}-h`, state.toString());
     } else {

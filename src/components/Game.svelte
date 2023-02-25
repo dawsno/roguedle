@@ -34,17 +34,21 @@
     Stats,
     generateWord,
     incrementRow,
+    artifactChoices,
   } from "../utils";
   import { letterStates, settings, mode } from "../stores";
   import Stat from "./widgets/stats/Stat.svelte";
   import Row from "./board/Row.svelte";
   import { trusted } from "svelte/internal";
+  import { Artifact } from "../artifacts";
+  import ArtifactSelection from "./widgets/ArtifactSelection.svelte";
 
   export let word: string;
   export let stats: Stats;
   export let game: GameState;
   export let toaster: Toaster;
   export let showRefresh = false;
+  let mmm = $mode;
 
   setContext("toaster", toaster);
   const version = getContext<string>("version");
@@ -56,9 +60,16 @@
   ];
   let showTutorial = $settings.tutorial === 3;
   let showSettings = false;
+  let showArtifacts = false;
   let showStats = false;
   let showHistorical = false;
-
+  let artifactIds: number[] = [3, 3, 3, 3];
+  let imgStrings: string[] = [
+    "../../../public/artifactArt/CuriosCoots1.png",
+    "../../../public/artifactArt/CuriosCoots2.png",
+    "../../../public/artifactArt/CuriosCoots3.png",
+    "../../../public/artifactArt/CuriosCoots4.png",
+  ];
   let board: Board;
   let timer: Timer;
 
@@ -178,10 +189,12 @@
       () => toaster.pop(PRAISE[ind]),
       DELAY_INCREMENT * COLS + DELAY_INCREMENT
     );
+    generateArtifact(game);
+    showArtifacts = true;
     setTimeout(setShowStatsTrue, delay * 1.4);
     if (!modeData.modes[$mode].historical) {
       stats.addWin(game.guesses, modeData.modes[$mode]);
-      //showRefresh = true;
+      showRefresh = true;
       game.streak = stats.streak;
       stats = stats;
       localStorage.setItem(`stats-${$mode}`, stats.toString());
@@ -190,6 +203,7 @@
 
   function lose() {
     game.active = false;
+    showArtifacts = false;
     game.artifactStates = new Array<ArtifactState>();
     setTimeout(setShowStatsTrue, delay);
     if (!modeData.modes[$mode].historical) {
@@ -259,35 +273,57 @@
   let showCoots: boolean;
   function generateArtifact(g: GameState) {
     var coots = g.artifactStates.find((item) => item.id === 3);
-    var cootsCount = coots.artifactData + 1 || 1;
+    var cootsCount = 1;
+    if (coots) {
+      cootsCount = coots.artifactData;
+    }
     if (cootsCount >= 7) {
       showCoots = false;
     } else {
       showCoots = true;
     }
-    switch (cootsCount) {
-      case 1:
-        document.documentElement.style.setProperty("--a4", "--artifact3_1");
-        break;
-      case 2:
-        document.documentElement.style.setProperty("--a4", "--artifact3_2");
-        break;
-      case 3:
-        document.documentElement.style.setProperty("--a4", "--artifact3_3");
-        break;
-      case 4:
-        document.documentElement.style.setProperty("--a4", "--artifact3_4");
-        break;
-      case 5:
-        document.documentElement.style.setProperty("--a4", "--artifact3_5");
-        break;
-      case 6:
-        document.documentElement.style.setProperty("--a4", "--artifact3_6");
-        break;
-      case 7:
-        document.documentElement.style.setProperty("--a4", "--artifact3_7");
-        break;
+    var ids = new Array<number>();
+    var idsToExclude = g.artifactStates
+      .filter((obj) => !obj.canHaveMultiple)
+      .map((obj) => obj.id);
+    var availableItems = allowedArtifacts.filter(
+      (item) => !idsToExclude.includes(item)
+    );
+    if (!availableItems.includes(12)) {
+      availableItems.push(12);
     }
+    if (!availableItems.includes(13)) {
+      availableItems.push(13);
+    }
+    var x = 0;
+    for (let index = 0; index < artifactChoices; index++) {
+      var ind = seededRandomInt(0, availableItems.length, g.seed);
+      var id = availableItems[ind];
+      while (ids.includes(id)) {
+        ind = seededRandomInt(0, availableItems.length, g.seed + x);
+        id = availableItems[ind];
+        x++;
+      }
+      ids.push(id);
+    }
+    artifactIds = ids;
+    var artifactImages = new Array<string>();
+    artifactIds.forEach((id) => {
+      var artifact = Artifact.generateArtifact(id, game);
+      var baseURL = "../../../public/artifactArt/";
+      artifactImages.push(baseURL + artifact.state.imgString);
+    });
+    imgStrings = artifactImages;
+    ids.push(3);
+    imgStrings.push(
+      "../../../public/artifactArt/CuriosCoots" + cootsCount + ".png"
+    );
+  }
+  function handleDataUpdated(event: CustomEvent<GameState>) {
+    game = event.detail;
+    game = game;
+    saveState(game);
+    $mode = $mode;
   }
 </script>
 
@@ -338,13 +374,17 @@
 >
   <Tutorial visible={showTutorial} />
 </Modal>
-
 <Modal bind:visible={showStats}>
   {#if modeData.modes[$mode].historical}
     <h2 class="historical">Statistics not available for historical games</h2>
   {:else}
     <Statistics data={stats} />
-    <Distribution distribution={stats.guesses} {game} />
+    <ArtifactSelection
+      gs={game}
+      ids={artifactIds}
+      images={imgStrings}
+      on:dataUpdated={handleDataUpdated}
+    />
   {/if}
   <Separator visible={!game.active}>
     <Timer
@@ -413,6 +453,7 @@
     justify-content: space-between;
     align-items: center;
     height: 100%;
+    width: 100%;
     overflow-y: scroll;
     margin: auto;
     position: relative;

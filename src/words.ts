@@ -5968,7 +5968,6 @@ const words = {
     "scarf",
     "scarp",
     "scars",
-    "scart",
     "scary",
     "scats",
     "scaup",
