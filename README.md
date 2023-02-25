@@ -6,15 +6,10 @@
 
 Roguedle - a wordle roguelike
 
-## Additional modes
-
-By tapping Roguedle at the top of the screen, the game will change to ludwig mode(AKA eNgLiSh MaJoR mode), where losing does not lock you out.
+every 2 words the word length increases
+every 2 words you get an artifact or an extra guess.
+you win when you solve 2 twelve letter words.
 
 # Technical details.
 
 The project was initialized using `npm init vite@latest` and selecting the Svelte template.
-
-Anybody is welcome to fork this repository and do what they like with it, provided they follow the accompanying license (GPL-3.0).
-I would also appreciate if you could link back to this repository and credit me in your project.
-
-Have fun :)

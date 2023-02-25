@@ -95,7 +95,7 @@
     align-items: center;
     margin-bottom: 2px;
     padding-top: 5px;
-    background-color: white;
+    background-color: var(--bg-primary);
   }
   .row {
     justify-content: center;

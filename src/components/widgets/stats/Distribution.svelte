@@ -50,7 +50,7 @@
   .bar {
     min-width: 7%;
     transition: width 0.3s ease-out;
-    background: var(--color-absent);
+    background: gray;
     color: white;
     font-weight: bold;
     display: flex;
@@ -59,6 +59,6 @@
     padding-right: min(0.8rem, 1vw);
   }
   .bar.this {
-    background: var(--color-correct);
+    background: gray;
   }
 </style>

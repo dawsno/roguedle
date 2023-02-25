@@ -44,6 +44,7 @@
   export let stats: Stats;
   export let game: GameState;
   export let toaster: Toaster;
+  export let showRefresh = false;
 
   setContext("toaster", toaster);
   const version = getContext<string>("version");
@@ -57,7 +58,6 @@
   let showSettings = false;
   let showStats = false;
   let showHistorical = false;
-  let showRefresh = false;
 
   let board: Board;
   let timer: Timer;
@@ -168,17 +168,21 @@
       board.shake(game.guesses);
     }
   }
-
   function win() {
+    let ind: number;
     board.bounce(game.guesses - 1);
     game.active = false;
+    ind = game.guesses - 1;
+    if (ind >= PRAISE.length) ind = PRAISE.length - 1;
     setTimeout(
-      () => toaster.pop(PRAISE[game.guesses - 1]),
+      () => toaster.pop(PRAISE[ind]),
       DELAY_INCREMENT * COLS + DELAY_INCREMENT
     );
     setTimeout(setShowStatsTrue, delay * 1.4);
     if (!modeData.modes[$mode].historical) {
       stats.addWin(game.guesses, modeData.modes[$mode]);
+      //showRefresh = true;
+      game.streak = stats.streak;
       stats = stats;
       localStorage.setItem(`stats-${$mode}`, stats.toString());
     }
@@ -190,6 +194,7 @@
     setTimeout(setShowStatsTrue, delay);
     if (!modeData.modes[$mode].historical) {
       stats.addLoss(modeData.modes[$mode]);
+      game.streak = stats.streak;
       stats = stats;
       localStorage.setItem(`stats-${$mode}`, stats.toString());
     }
@@ -206,7 +211,12 @@
     var seed = newSeed($mode) + stats.streak;
     modeData.modes[$mode].seed = seed;
     $letterStates = new LetterStates();
-    game = new GameState($mode, seed, localStorage.getItem(`state-${$mode}`));
+    game = new GameState(
+      $mode,
+      seed,
+      stats.streak,
+      localStorage.getItem(`state-${$mode}`)
+    );
     game = game;
     seed = seed + stats.streak;
     word = await generateWord(game, seed);
@@ -238,6 +248,47 @@
     if (!game.active) setTimeout(setShowStatsTrue, delay);
   });
   // $: toaster.pop(word);
+  $: saveState(game);
+  function saveState(state: GameState) {
+    if (modeData.modes[$mode].historical) {
+      localStorage.setItem(`state-${$mode}-h`, state.toString());
+    } else {
+      localStorage.setItem(`state-${$mode}`, state.toString());
+    }
+  }
+  let showCoots: boolean;
+  function generateArtifact(g: GameState) {
+    var coots = g.artifactStates.find((item) => item.id === 3);
+    var cootsCount = coots.artifactData + 1 || 1;
+    if (cootsCount >= 7) {
+      showCoots = false;
+    } else {
+      showCoots = true;
+    }
+    switch (cootsCount) {
+      case 1:
+        document.documentElement.style.setProperty("--a4", "--artifact3_1");
+        break;
+      case 2:
+        document.documentElement.style.setProperty("--a4", "--artifact3_2");
+        break;
+      case 3:
+        document.documentElement.style.setProperty("--a4", "--artifact3_3");
+        break;
+      case 4:
+        document.documentElement.style.setProperty("--a4", "--artifact3_4");
+        break;
+      case 5:
+        document.documentElement.style.setProperty("--a4", "--artifact3_5");
+        break;
+      case 6:
+        document.documentElement.style.setProperty("--a4", "--artifact3_6");
+        break;
+      case 7:
+        document.documentElement.style.setProperty("--a4", "--artifact3_7");
+        break;
+    }
+  }
 </script>
 
 <svelte:body on:click={board.hideCtx} on:contextmenu={board.hideCtx} />

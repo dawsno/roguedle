@@ -68,13 +68,13 @@
     background-position: center;
   }
   .🟨 {
-    background-image: url("../../../public/tiles/slotYellow.png");
+    background-image: var(--color-present);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
   }
   .🟩 {
-    background: url("../../../public/tiles/slotGreen.png");
+    background: var(--color-correct);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;

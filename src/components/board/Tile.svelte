@@ -104,12 +104,12 @@
     transform: rotateX(180deg);
   }
   .🟩 .back {
-    background: url("../../../public/tiles/slotGreen.png");
+    background: var(--color-correct);
     background-size: 100%;
     background-color: transparent;
   }
   .🟨 .back {
-    background: url("../../../public/tiles/slotYellow.png");
+    background: var(--color-present);
     background-size: 100%;
     background-color: transparent;
   }

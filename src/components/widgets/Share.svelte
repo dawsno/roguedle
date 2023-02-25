@@ -42,7 +42,6 @@
     font-size: var(--fs-medium);
     text-transform: uppercase;
     font-weight: bold;
-    background: var(--color-correct);
     border-radius: 4px;
     height: 52px;
     display: flex;

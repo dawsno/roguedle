@@ -156,7 +156,7 @@
     appearance: textfield;
   }
   .valid {
-    outline-color: var(--color-correct);
+    outline-color: gray;
   }
   select {
     display: inline;
@@ -170,7 +170,7 @@
     }
   }
   .button {
-    background-color: var(--color-correct);
+    background-color: gray;
   }
   .disabled {
     background-color: var(--fg-secondary);

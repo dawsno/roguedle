@@ -5,7 +5,7 @@
   import { ms as MS } from "../../enums";
   import { mode } from "../../stores";
   import { modeData, timeRemaining } from "../../utils";
-
+  import showRefresh from "../Game.svelte";
   const dispatch = createEventDispatcher();
 
   let ms = 1000;
@@ -29,7 +29,7 @@
 
 <h3>Next roguedle</h3>
 <div class="container">
-  {#if ms > 0}
+  {#if ms > 0 && !showRefresh}
     <div class="timer">
       {`${Math.floor(ms / MS.HOUR)}`.padStart(2, "0")}:{`${Math.floor(
         (ms % MS.HOUR) / MS.MINUTE
@@ -68,7 +68,6 @@
     height: 80%;
     aspect-ratio: 1;
     padding: 4px;
-    background: var(--color-correct);
     border-radius: 4px;
     cursor: pointer;
     margin: auto;

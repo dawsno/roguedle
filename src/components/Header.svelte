@@ -64,6 +64,7 @@
       />
     </GameIcon>
   </div>
+  <!--
   {#if tutorial}
     <div
       transition:scale
@@ -75,6 +76,7 @@
       <span class="ok">OK</span>
     </div>
   {/if}
+  -->
 </header>
 
 <style lang="scss">

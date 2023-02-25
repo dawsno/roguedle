@@ -184,7 +184,7 @@ export const keys = ["qwertyuiop", "asdfghjkl", "zxcvbnm"];
 export function newSeed(mode: GameMode, time?: number) {
   const now = time ?? Date.now();
   switch (mode) {
-    case GameMode.rougedle:
+    /*case GameMode.rougedle:
       // Adds time zone offset to UTC time, calculates how many days that falls after 1/1/1970
       // and returns the unix time for the beginning of that day.
       return Date.UTC(
@@ -194,7 +194,7 @@ export function newSeed(mode: GameMode, time?: number) {
           Math.floor(
             (now - new Date().getTimezoneOffset() * ms.MINUTE) / ms.DAY
           )
-      );
+      );*/
     case GameMode.ludwig:
       return now - (now % ms.SECOND);
     // case GameMode.minutely:
@@ -206,7 +206,7 @@ export function newSeed(mode: GameMode, time?: number) {
 export const modeData: ModeData = {
   default: GameMode.ludwig,
   modes: [
-    {
+    /*{
       name: "Roguedle",
       unit: ms.DAY,
       start: 1642370400000, // 17/01/2022 UTC+2
@@ -214,7 +214,7 @@ export const modeData: ModeData = {
       historical: false,
       streak: true,
       useTimeZone: true,
-    },
+    },*/
     {
       name: "Ludwig Mode",
       unit: ms.SECOND,
@@ -283,12 +283,13 @@ export class GameState extends Storable {
   #valid = false;
   #mode: GameMode;
   seed: number;
+  streak: number;
 
-  constructor(mode: GameMode, seed: number, data?: string) {
+  constructor(mode: GameMode, seed: number, streak: number, data?: string) {
     super();
     this.#mode = mode;
     if (data) {
-      this.parse(data);
+      this.parse(data, streak);
       this.seed = seed;
     }
     if (!this.#valid) {
@@ -299,7 +300,8 @@ export class GameState extends Storable {
       this.wordNumber = getWordNumber(mode);
       this.artifactStates = new Array<ArtifactState>();
       this.seed = seed;
-      startOfRound(this);
+      this.streak = 0;
+      startOfRound(this, streak);
       this.board = {
         words: Array(ROWS).fill(""),
         state: Array.from({ length: ROWS }, () => Array(COLS).fill("🔳")),
@@ -369,7 +371,7 @@ export class GameState extends Storable {
     }
     return result;
   }
-  private parse(str: string) {
+  private parse(str: string, streak: number) {
     const parsed = JSON.parse(str) as GameState;
     if (parsed.wordNumber !== getWordNumber(this.#mode)) return;
     this.active = parsed.active;
@@ -379,8 +381,9 @@ export class GameState extends Storable {
     this.artifactStates = parsed.artifactStates;
     this.wordNumber = parsed.wordNumber;
     this.board = parsed.board;
+    this.streak = parsed.streak;
     this.#valid = true;
-    startOfRound(this);
+    startOfRound(this, streak);
   }
   public updateBoard() {
     //TODO make this work with guess decreases for curses
@@ -455,7 +458,7 @@ export class Stats extends Storable {
     ++this.guesses[guesses];
     ++this.played;
     if (this.#hasStreak) {
-      this.streak = mode.seed - this.lastGame > mode.unit ? 1 : this.streak + 1;
+      this.streak = this.streak + 1;
       this.maxStreak = Math.max(this.streak, this.maxStreak);
     }
     this.lastGame = mode.seed;
@@ -850,13 +853,16 @@ export async function getWordData(word: string): Promise<DictionaryEntry> {
   return cache.get(word);
 }
 
-export function startOfRound(gamesState: GameState) {
+export function startOfRound(gamesState: GameState, streak: number) {
   COLS = initColumns;
   ROWS = initRows;
   roundsBetweenArtifact = initRoundsBetweenArtifact;
   roundsBetweenIncrease = initRoundsBetweenIncrease;
   artifactChoices = initArtifactChoices;
   updateValues(gamesState);
+  streak = Math.floor(streak / roundsBetweenIncrease);
+  COLS = COLS + streak;
+  if (COLS > 12) COLS = 12;
 }
 function updateValues(gameState: GameState) {
   var valsToUpdate = new Array<string>();

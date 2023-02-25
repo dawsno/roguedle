@@ -1,7 +1,7 @@
 export enum GameMode {
-  "rougedle",
   "ludwig",
-  "testing",
+  //"rougedle",
+  //"testing",
 }
 
 export const enum ms {
