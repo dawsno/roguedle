@@ -71,7 +71,7 @@
     }
   }
   .row {
-    height: 40px;
+    height: 60px;
     display: flex;
     gap: 4px;
   }
