@@ -35,6 +35,7 @@
     generateWord,
     incrementRow,
     artifactChoices,
+    roundsBetweenArtifact,
   } from "../utils";
   import { letterStates, settings, mode } from "../stores";
   import Stat from "./widgets/stats/Stat.svelte";
@@ -66,9 +67,9 @@
   let artifactIds: number[] = [3, 3, 3, 3];
   let imgStrings: string[] = [
     "../../../public/artifactArt/CuriosCoots1.png",
-    "../../../public/artifactArt/CuriosCoots2.png",
-    "../../../public/artifactArt/CuriosCoots3.png",
-    "../../../public/artifactArt/CuriosCoots4.png",
+    "../../../public/artifactArt/CuriosCoots1.png",
+    "../../../public/artifactArt/CuriosCoots1.png",
+    "../../../public/artifactArt/CuriosCoots1.png",
   ];
   let board: Board;
   let timer: Timer;
@@ -200,7 +201,7 @@
       () => toaster.pop(PRAISE[ind]),
       DELAY_INCREMENT * COLS + DELAY_INCREMENT
     );
-    generateArtifact(game);
+    generateArtifact(game, stats.streak % roundsBetweenArtifact == 0);
     showArtifacts = true;
     setTimeout(setShowStatsTrue, delay * 1.4);
     if (!modeData.modes[$mode].historical) {
@@ -226,7 +227,7 @@
   }
 
   function concede() {
-    showSettings = false;
+    showSettings = true;
     setTimeout(setShowStatsTrue, DELAY_INCREMENT);
     lose();
   }
@@ -294,7 +295,12 @@
     }
   }
   let showCoots: boolean;
-  function generateArtifact(g: GameState) {
+  function generateArtifact(g: GameState, generate: boolean) {
+    if (!generate) {
+      imgStrings = [];
+      ids = [];
+      return;
+    }
     var coots = g.artifactStates.find((item) => item.id === 3);
     var cootsCount = 1;
     if (coots) {

@@ -177,22 +177,26 @@ export abstract class Artifact {
       case 15:
         state.name = "Noun Rocket";
         state.imgString = "NounRocket.png";
+        state.effectText = "increased chance of the word being a noun";
         artifact = new NounRocket(state);
         break;
       case 16:
         state.name = "Virtuous Verbs";
         state.imgString = "VirtuousVerbs.png";
+        state.effectText = "increased chance of the word being a verb";
         artifact = new VirtuousVerbs(state);
         break;
       case 17:
         state.name = "Adjective Archfiend";
         state.imgString = "AdjectiveArchfiend.png";
+        state.effectText = "increased chance of the word being an adjective";
         artifact = new AdjectiveArchfiend(state);
         break;
       case 18:
         state.name = "Adverb Affection";
         state.imgString = "AdverbAffection.png";
         artifact = new AdverbAffection(state);
+        state.effectText = "increased chance of the word being am adverb";
         break;
       case 19:
         state.name = "Dazzling Definition";
@@ -311,7 +315,7 @@ export abstract class Artifact {
         state.imgString = "Mevowel.png";
         state.artifactType = ArtifactType.keyboardInfo;
         state.effectText =
-          "At the start of every round, show a consonant in the word on the keyboard";
+          "At the start of every round, show a vowel in the word on the keyboard";
         artifact = new Mevowel(state);
         break;
       case 42:

@@ -11,7 +11,11 @@
     animation = "shake";
   }
   export function bounce() {
-    tiles.forEach((e) => e.bounce());
+    tiles.forEach((e, i) => {
+      if (i < COLS) {
+        e.bounce();
+      }
+    });
   }
   const dispatch = createEventDispatcher();
   let animation = "";
