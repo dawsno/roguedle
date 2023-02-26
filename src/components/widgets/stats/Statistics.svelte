@@ -10,6 +10,7 @@
     stats = [
       ["word", data.streak],
       ["level", COLS - 4],
+      ["12 letter words", data.twelveLetters],
     ];
   }
 </script>

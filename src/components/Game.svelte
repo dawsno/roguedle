@@ -184,6 +184,17 @@
     board.bounce(game.guesses - 1);
     game.active = false;
     ind = game.guesses - 1;
+    if (COLS == 12) {
+      stats.twelveLetters++;
+      if (stats.twelveLetters >= 2) {
+        setTimeout(
+          () => toaster.pop("YOU WIN"),
+          DELAY_INCREMENT * COLS + DELAY_INCREMENT
+        );
+        concede();
+        return;
+      }
+    }
     if (ind >= PRAISE.length) ind = PRAISE.length - 1;
     setTimeout(
       () => toaster.pop(PRAISE[ind]),

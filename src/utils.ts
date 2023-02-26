@@ -434,6 +434,7 @@ export class Stats extends Storable {
     5: 0,
     6: 0,
   };
+  public twelveLetters = 0;
   public streak: number;
   public maxStreak: number;
   #hasStreak = false;
