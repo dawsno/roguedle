@@ -387,17 +387,14 @@
   <Tutorial visible={showTutorial} />
 </Modal>
 <Modal bind:visible={showStats}>
-  {#if modeData.modes[$mode].historical}
-    <h2 class="historical">Statistics not available for historical games</h2>
-  {:else}
-    <Statistics data={stats} />
-    <ArtifactSelection
-      gs={game}
-      ids={artifactIds}
-      images={imgStrings}
-      on:dataUpdated={handleDataUpdated}
-    />
-  {/if}
+  <Statistics data={stats} />
+  <ArtifactSelection
+    gs={game}
+    ids={artifactIds}
+    images={imgStrings}
+    show={showArtifacts}
+    on:dataUpdated={handleDataUpdated}
+  />
   <Separator visible={!game.active}>
     <Timer
       slot="1"

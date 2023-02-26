@@ -9,6 +9,7 @@
   export let images: string[];
   export let ids: number[];
   export let gs: GameState;
+  export let show: boolean;
 
   let hoverImageId: number | null = null;
   let hoverTimeout: number | null = null;
@@ -18,6 +19,7 @@
     var artifact = Artifact.generateArtifact(imageId, gs);
     gs.artifactStates.push(artifact.state);
     updateData(gs);
+    show = false;
   }
 
   function updateData(updatedData: GameState) {
@@ -49,30 +51,32 @@
 <div class="image-container">
   <div class="image-grid">
     <!-- svelte-ignore a11y-mouse-events-have-key-events -->
-    {#each images as image, i}
-      <!-- svelte-ignore a11y-click-events-have-key-events -->
-      <!-- svelte-ignore a11y-mouse-events-have-key-events -->
-      <div
-        class="image-wrapper"
-        on:click={() => handleImageClick(ids[i])}
-        on:mouseover={() => handleImageHover(ids[i])}
-        on:mouseout={handleMouseOut}
-      >
-        <img
-          src={image}
-          alt={`Image ${i + 1}`}
-          class={i === images.length - 1 ? "last-image" : ""}
-          style={`grid-column: ${(i % 3) + 1}; grid-row: ${
-            Math.floor(i / 3) + 1
-          };`}
-        />
-        {#if hoverImageId === ids[i]}
-          <div class="hover-text">
-            {Artifact.generateArtifact(ids[i], gs).state.effectText}
-          </div>
-        {/if}
-      </div>
-    {/each}
+    {#if show}
+      {#each images as image, i}
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <!-- svelte-ignore a11y-mouse-events-have-key-events -->
+        <div
+          class="image-wrapper"
+          on:click={() => handleImageClick(ids[i])}
+          on:mouseover={() => handleImageHover(ids[i])}
+          on:mouseout={handleMouseOut}
+        >
+          <img
+            src={image}
+            alt={`Image ${i + 1}`}
+            class={i === images.length - 1 ? "last-image" : ""}
+            style={`grid-column: ${(i % 3) + 1}; grid-row: ${
+              Math.floor(i / 3) + 1
+            };`}
+          />
+          {#if hoverImageId === ids[i]}
+            <div class="hover-text">
+              {Artifact.generateArtifact(ids[i], gs).state.effectText}
+            </div>
+          {/if}
+        </div>
+      {/each}
+    {/if}
   </div>
 </div>
 
