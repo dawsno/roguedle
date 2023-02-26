@@ -17,6 +17,7 @@
     images = [];
     var artifact = Artifact.generateArtifact(imageId, gs);
     gs.artifactStates.push(artifact.state);
+    updateData(gs);
   }
 
   function updateData(updatedData: GameState) {

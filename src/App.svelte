@@ -55,6 +55,7 @@
         m,
         seed,
         stats.streak,
+        [],
         localStorage.getItem(`state-${m}-h`)
       );
       state = state;
@@ -64,6 +65,7 @@
         m,
         seed,
         stats.streak,
+        [],
         localStorage.getItem(`state-${m}`)
       );
       state = state;

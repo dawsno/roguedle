@@ -285,7 +285,13 @@ export class GameState extends Storable {
   seed: number;
   streak: number;
 
-  constructor(mode: GameMode, seed: number, streak: number, data?: string) {
+  constructor(
+    mode: GameMode,
+    seed: number,
+    streak: number,
+    states?: ArtifactState[],
+    data?: string
+  ) {
     super();
     this.#mode = mode;
     if (data) {
@@ -298,7 +304,11 @@ export class GameState extends Storable {
       this.validHard = true;
       this.time = modeData.modes[mode].seed;
       this.wordNumber = getWordNumber(mode);
-      this.artifactStates = new Array<ArtifactState>();
+      if (states) {
+        this.artifactStates = states;
+      } else {
+        this.artifactStates = new Array<ArtifactState>();
+      }
       this.seed = seed;
       this.streak = 0;
       startOfRound(this, streak);

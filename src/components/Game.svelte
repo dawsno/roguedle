@@ -225,12 +225,24 @@
     var seed = newSeed($mode) + stats.streak;
     modeData.modes[$mode].seed = seed;
     $letterStates = new LetterStates();
-    game = new GameState(
-      $mode,
-      seed,
-      stats.streak,
-      localStorage.getItem(`state-${$mode}`)
-    );
+    var states = game.artifactStates;
+    if (stats.streak > 0) {
+      game = new GameState(
+        $mode,
+        seed,
+        stats.streak,
+        states,
+        localStorage.getItem(`state-${$mode}`)
+      );
+    } else {
+      game = new GameState(
+        $mode,
+        seed,
+        stats.streak,
+        [],
+        localStorage.getItem(`state-${$mode}`)
+      );
+    }
     game = game;
     seed = seed + stats.streak;
     word = await generateWord(game, seed);
