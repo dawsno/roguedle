@@ -1,6 +1,6 @@
 <script lang="ts">
   import { mode } from "../../../stores";
-  import { modeData, Stats } from "../../../utils";
+  import { COLS, modeData, Stats } from "../../../utils";
 
   import Stat from "./Stat.svelte";
   export let data: Stats;
@@ -8,31 +8,9 @@
   let stats: [string, string | number][];
   $: {
     stats = [
-      ["Played", data.played],
-      [
-        "Win %",
-        Math.round(((data.played - data.guesses.fail) / data.played) * 100) ||
-          0,
-      ],
-      [
-        "Average Guesses",
-        (
-          Object.entries(data.guesses).reduce((a, b) => {
-            if (!isNaN(+b[0])) {
-              return a + +b[0] * b[1];
-            }
-            return a;
-          }, 0) / data.played || 0
-        ).toFixed(1),
-      ],
+      ["word", data.streak],
+      ["level", COLS - 4],
     ];
-    if (data.guesses.fail > 0) {
-      stats.push(["Lost", data.guesses.fail]);
-    }
-    if (data.hasStreak) {
-      stats.push(["Current Streak", data.streak]);
-      stats.push(["Max Streak", data.maxStreak]);
-    }
   }
 </script>
 
