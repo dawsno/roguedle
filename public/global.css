@@ -9,7 +9,10 @@
 
 :root {
 	font-family: Arial, sans-serif;
-	background: var(--bg-primary);
+	background-image: var(--bg-primary);
+    background-size: cover ;
+	background-position: center;
+	background-attachment: fixed;
 	color: var(--fg-primary);
 	font-size: var(--fs-regular);
 	user-select: none;
@@ -32,7 +35,7 @@
 	--border-secondary: #272729;
 	--bg-secondary: #1a1a1b;
 	--mode-symbol-color: var(--bg-secondary);
-	--bg-primary: #121213;
+	--bg-primary: url("../public/img/BackgroundDark.png");
 
 	--red: #9C2323;
 	--color-present: url("../../../public/tiles/slotYellow.png");
@@ -40,96 +43,6 @@
 	--color-absent: url("../../../public/tiles/slotDarkGray.png");
 	--evaluated-key-color: url("../../../public/tiles/slotDarkGray.png");
 	--key-bg: url("../../../public/tiles/slotGray.png");
-
-	--artifact3_1:url("../../../public/artifactArt/CuriosCoots1.png");
-	--artifact3_2:url("../../../public/artifactArt/CuriosCoots2.png");
-	--artifact3_3:url("../../../public/artifactArt/CuriosCoots3.png");
-	--artifact3_4:url("../../../public/artifactArt/CuriosCoots4.png");
-	--artifact3_5:url("../../../public/artifactArt/CuriosCoots5.png");
-	--artifact3_6:url("../../../public/artifactArt/CuriosCoots6.png");
-	--artifact3_7:url("../../../public/artifactArt/CuriosCoots7.png");
-
-	--artifact4:url("../../../public/artifactArt/ArtifactSeeker.png");
-	--artifact5:url("../../../public/artifactArt/Thaumsaurus.png");
-	--artifact24:url("../../../public/artifactArt/RandomiserRocket.png");
-	--artifact25:url("../../../public/artifactArt/Wormhole.png");
-	--artifact32:url("../../../public/artifactArt/LuckyCat.png");
-	--artifact67:url("../../../public/artifactArt/BrainInAJar.png");
-	--artifact8:url("../../../public/artifactArt/GoldenPortal.png");
-	--artifact9:url("../../../public/artifactArt/GreyRabbit.png");
-	--artifact10:url("../../../public/artifactArt/ShadowScrutinizer.png");
-	--artifact11:url("../../../public/artifactArt/VigilantHunter.png");
-	--artifact14:url("../../../public/artifactArt/Freestyle.png");
-	--artifact38:url("../../../public/artifactArt/CatLikeClarity.png");
-	--artifact44:url("../../../public/artifactArt/RandomPurrfector.png");
-	--artifact26:url("../../../public/artifactArt/RareLetterPortal.png");
-	--artifact40:url("../../../public/artifactArt/CosmicConsonant.png");
-	--artifact41:url("../../../public/artifactArt/Mevowel.png");
-	--artifact59:url("../../../public/artifactArt/GoldenKey.png");
-	--artifact60:url("../../../public/artifactArt/SilverKey.png");
-	--artifact62:url("../../../public/artifactArt/SkeletonKey.png");
-	--artifact15:url("../../../public/artifactArt/NounRocket.png");
-	--artifact16:url("../../../public/artifactArt/VirtuousVerbs.png");
-	--artifact17:url("../../../public/artifactArt/AdjectiveArchfiend.png");
-	--artifact18:url("../../../public/artifactArt/AdverbAffection.png");
-
-	--artifact12_a:url("../../../public/artifactArt/AlphabetRouletteA.png");
-	--artifact12_b:url("../../../public/artifactArt/AlphabetRouletteB.png");
-	--artifact12_c:url("../../../public/artifactArt/AlphabetRouletteC.png");
-	--artifact12_d:url("../../../public/artifactArt/AlphabetRouletteD.png");
-	--artifact12_e:url("../../../public/artifactArt/AlphabetRouletteE.png");
-	--artifact12_f:url("../../../public/artifactArt/AlphabetRouletteF.png");
-	--artifact12_g:url("../../../public/artifactArt/AlphabetRouletteG.png");
-	--artifact12_h:url("../../../public/artifactArt/AlphabetRouletteH.png");
-	--artifact12_i:url("../../../public/artifactArt/AlphabetRouletteI.png");
-	--artifact12_j:url("../../../public/artifactArt/AlphabetRouletteJ.png");
-	--artifact12_k:url("../../../public/artifactArt/AlphabetRouletteK.png");
-	--artifact12_l:url("../../../public/artifactArt/AlphabetRouletteL.png");
-	--artifact12_m:url("../../../public/artifactArt/AlphabetRouletteM.png");
-	--artifact12_n:url("../../../public/artifactArt/AlphabetRouletteN.png");
-	--artifact12_o:url("../../../public/artifactArt/AlphabetRouletteO.png");
-	--artifact12_p:url("../../../public/artifactArt/AlphabetRouletteP.png");
-	--artifact12_q:url("../../../public/artifactArt/AlphabetRouletteQ.png");
-	--artifact12_r:url("../../../public/artifactArt/AlphabetRouletteR.png");
-	--artifact12_s:url("../../../public/artifactArt/AlphabetRouletteS.png");
-	--artifact12_t:url("../../../public/artifactArt/AlphabetRouletteT.png");
-	--artifact12_u:url("../../../public/artifactArt/AlphabetRouletteU.png");
-	--artifact12_v:url("../../../public/artifactArt/AlphabetRouletteV.png");
-	--artifact12_w:url("../../../public/artifactArt/AlphabetRouletteW.png");
-	--artifact12_x:url("../../../public/artifactArt/AlphabetRouletteX.png");
-	--artifact12_y:url("../../../public/artifactArt/AlphabetRouletteY.png");
-	--artifact12_z:url("../../../public/artifactArt/AlphabetRouletteZ.png");
-
-	--artifact13_a:url("../../../public/artifactArt/ConjureConclusionA.png");
-	--artifact13_b:url("../../../public/artifactArt/ConjureConclusionB.png");
-	--artifact13_c:url("../../../public/artifactArt/ConjureConclusionC.png");
-	--artifact13_d:url("../../../public/artifactArt/ConjureConclusionD.png");
-	--artifact13_e:url("../../../public/artifactArt/ConjureConclusionE.png");
-	--artifact13_f:url("../../../public/artifactArt/ConjureConclusionF.png");
-	--artifact13_g:url("../../../public/artifactArt/ConjureConclusionG.png");
-	--artifact13_h:url("../../../public/artifactArt/ConjureConclusionH.png");
-	--artifact13_i:url("../../../public/artifactArt/ConjureConclusionI.png");
-	--artifact13_j:url("../../../public/artifactArt/ConjureConclusionJ.png");
-	--artifact13_k:url("../../../public/artifactArt/ConjureConclusionK.png");
-	--artifact13_l:url("../../../public/artifactArt/ConjureConclusionL.png");
-	--artifact13_m:url("../../../public/artifactArt/ConjureConclusionM.png");
-	--artifact13_n:url("../../../public/artifactArt/ConjureConclusionN.png");
-	--artifact13_o:url("../../../public/artifactArt/ConjureConclusionO.png");
-	--artifact13_p:url("../../../public/artifactArt/ConjureConclusionP.png");
-	--artifact13_q:url("../../../public/artifactArt/ConjureConclusionQ.png");
-	--artifact13_r:url("../../../public/artifactArt/ConjureConclusionR.png");
-	--artifact13_s:url("../../../public/artifactArt/ConjureConclusionS.png");
-	--artifact13_t:url("../../../public/artifactArt/ConjureConclusionT.png");
-	--artifact13_u:url("../../../public/artifactArt/ConjureConclusionU.png");
-	--artifact13_v:url("../../../public/artifactArt/ConjureConclusionV.png");
-	--artifact13_w:url("../../../public/artifactArt/ConjureConclusionW.png");
-	--artifact13_x:url("../../../public/artifactArt/ConjureConclusionX.png");
-	--artifact13_y:url("../../../public/artifactArt/ConjureConclusionY.png");
-	--artifact13_z:url("../../../public/artifactArt/ConjureConclusionZ.png");
-	--a1:var(--artifact3_1);
-	--a2:var(--artifact3_2);
-	--a3:var(--artifact3_3);
-	--a4:var(--artifact3_4);
 }
 
 body {
@@ -144,7 +57,7 @@ body {
 	--border-secondary: var(--border-primary);
 	--bg-secondary: #e0e0e0;
 	--mode-symbol-color: #f1f1f1;
-	--bg-primary: #ffffff;
+	--bg-primary: url("../public/img/BackgroundsLight.png");
 
 	--red: #C42C2C;
 	--color-present: url("../../../public/tiles/slotYellow.png");

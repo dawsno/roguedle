@@ -89,5 +89,8 @@
 
 <Toaster bind:this={toaster} />
 {#if toaster}
+  <audio loop autoplay>
+    <source src="../public/sfx_fadeout/bg_normal_squaresaw.flac" />
+  </audio>
   <Game {stats} bind:word {toaster} bind:game={state} />
 {/if}

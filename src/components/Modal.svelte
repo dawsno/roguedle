@@ -46,14 +46,19 @@
     position: absolute;
     opacity: 0;
     inset: 0;
-    background: #0008;
+    background-image: var(--bg-primary);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
   }
   .fullscreen.overlay {
-    background: var(--bg-primary);
+    background-image: var(--bg-primary);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
   }
   .modal {
     margin: auto;
-    background: var(--bg-primary);
     max-width: var(--game-width);
     position: absolute;
     inset: 0;

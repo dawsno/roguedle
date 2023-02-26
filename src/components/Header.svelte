@@ -47,7 +47,7 @@
       toaster.pop(modeData.modes[$mode].name);
     }}
   >
-    roguedle
+    <img src="../../public/img/ROGUEDLE2.png" height="70px" />
   </h1>
   <div class="icons">
     {#if showStats}
@@ -89,9 +89,12 @@
     align-items: center;
     border-bottom: 2px solid var(--border-primary);
     position: fixed;
-    background-color: var(--bg-primary);
-    width: 96%;
+    background-image: var(--bg-primary);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     height: 4em;
+    width: 96%;
     top: 0%;
     position: fixed;
     z-index: 1;

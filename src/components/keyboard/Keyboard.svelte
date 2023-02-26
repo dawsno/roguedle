@@ -95,7 +95,10 @@
     align-items: center;
     margin-bottom: 2px;
     padding-top: 5px;
-    background-color: var(--bg-primary);
+    background-image: var(--bg-primary);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
   }
   .row {
     justify-content: center;
